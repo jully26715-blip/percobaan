@@ -1,0 +1,454 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Aplikasi Tata Surya</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+    background:
+        radial-gradient(circle at 80% 20%, #263d75 0%, transparent 30%),
+        radial-gradient(circle at 15% 80%, #172c59 0%, transparent 35%),
+        linear-gradient(135deg, #050b1e, #101d3d, #071329);
+}
+
+/* Bintang */
+.stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(2px 2px at 20% 30%, white 99%, transparent),
+        radial-gradient(2px 2px at 70% 20%, white 99%, transparent),
+        radial-gradient(1px 1px at 40% 70%, white 99%, transparent),
+        radial-gradient(2px 2px at 85% 65%, white 99%, transparent),
+        radial-gradient(1px 1px at 10% 15%, white 99%, transparent);
+    background-size: 250px 250px;
+    opacity: .8;
+}
+
+/* Planet dekorasi */
+.planet {
+    position: fixed;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f9bd78, #c65d42, #713d70);
+    right: 8%;
+    top: 10%;
+    opacity: .65;
+    box-shadow: 0 0 55px #d77b7b55;
+}
+
+.planet::after {
+    content: "";
+    position: absolute;
+    width: 240px;
+    height: 65px;
+    border: 7px solid rgba(230,190,170,.7);
+    border-radius: 50%;
+    transform: rotate(-20deg);
+    top: 55px;
+    left: -30px;
+}
+
+/* Kartu */
+.login-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 32px;
+    text-align: center;
+    border-radius: 25px;
+    background: rgba(255,255,255,.09);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,.2);
+    box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    animation: muncul .6s ease;
+}
+
+@keyframes muncul {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Logo */
+.logo {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.login-card h1,
+.login-card h2 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.subtitle {
+    color: #c2d2f5;
+    font-size: 14px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+/* Input */
+.input-group {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    color: #e2eaff;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 11px;
+    background: rgba(255,255,255,.09);
+    color: white;
+    outline: none;
+    font-size: 14px;
+    transition: .3s;
+}
+
+.input-group input::placeholder {
+    color: #a9b9d8;
+}
+
+.input-group input:focus {
+    border-color: #65a5ff;
+    box-shadow: 0 0 12px rgba(65,145,255,.25);
+}
+
+/* Tombol */
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #3488ff, #6659e8);
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: .3s;
+    margin-top: 8px;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(52,136,255,.4);
+}
+
+/* Link */
+.extra-links {
+    color: #c2d2f5;
+    margin-top: 24px;
+    font-size: 13px;
+}
+
+.extra-links a {
+    color: #78b4ff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.extra-links a:hover {
+    text-decoration: underline;
+}
+
+/* Pesan */
+#pesan {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #ff9292;
+}
+
+/* Sembunyikan halaman daftar */
+[hidden] {
+    display: none !important;
+}
+
+/* HP */
+@media(max-width:480px) {
+    .login-card {
+        padding: 32px 24px;
+    }
+
+    .login-card h1,
+    .login-card h2 {
+        font-size: 25px;
+    }
+
+    .planet {
+        width: 100px;
+        height: 100px;
+        right: -20px;
+        top: 5%;
+    }
+
+    .planet::after {
+        width: 140px;
+        height: 35px;
+        top: 30px;
+        left: -20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+<div class="planet"></div>
+
+<!-- HALAMAN LOGIN -->
+<div class="login-card" id="box-login">
+
+    <div class="logo">🪐</div>
+
+    <h1>Tata Surya</h1>
+
+    <p class="subtitle">
+        Selamat datang di aplikasi pembelajaran Tata Surya.
+        Silakan masuk untuk memulai pembelajaran.
+    </p>
+
+    <form id="form-login">
+
+        <div class="input-group">
+            <label>Username</label>
+            <input
+                type="text"
+                id="login-user"
+                placeholder="Masukkan username"
+                autocomplete="username"
+                required>
+        </div>
+
+        <div class="input-group">
+            <label>Kata Sandi</label>
+            <input
+                type="password"
+                id="login-pass"
+                placeholder="Masukkan kata sandi"
+                autocomplete="current-password"
+                required>
+        </div>
+
+        <button type="submit" class="btn-login">
+            MASUK
+        </button>
+
+    </form>
+
+    <div class="extra-links">
+        <p>Belum punya akun?
+            <a href="#" id="link-daftar">Daftar sekarang</a>
+        </p>
+    </div>
+
+    <p id="pesan"></p>
+
+</div>
+
+
+<!-- HALAMAN PENDAFTARAN -->
+<div class="login-card" id="box-daftar" hidden>
+
+    <div class="logo">🌎</div>
+
+    <h2>Buat Akun</h2>
+
+    <p class="subtitle">
+        Daftarkan akunmu untuk mulai belajar.
+    </p>
+
+    <form id="form-daftar">
+
+        <div class="input-group">
+            <label>Nama Lengkap</label>
+            <input
+                type="text"
+                id="daftar-nama"
+                placeholder="Nama lengkap"
+                required>
+        </div>
+
+        <div class="input-group">
+            <label>Username</label>
+            <input
+                type="text"
+                id="daftar-user"
+                placeholder="Buat username"
+                required>
+        </div>
+
+        <div class="input-group">
+            <label>Kata Sandi</label>
+            <input
+                type="password"
+                id="daftar-pass"
+                placeholder="Buat kata sandi"
+                required>
+        </div>
+
+        <button type="submit" class="btn-login">
+            DAFTAR SEKARANG
+        </button>
+
+    </form>
+
+    <div class="extra-links">
+        <p>Sudah punya akun?
+            <a href="#" id="link-login">Masuk di sini</a>
+        </p>
+    </div>
+
+</div>
+
+
+<script>
+
+// Mengambil elemen halaman
+const boxLogin = document.getElementById("box-login");
+const boxDaftar = document.getElementById("box-daftar");
+
+// Berpindah halaman login dan daftar
+document.getElementById("link-daftar").onclick = function(e) {
+    e.preventDefault();
+    boxLogin.hidden = true;
+    boxDaftar.hidden = false;
+};
+
+document.getElementById("link-login").onclick = function(e) {
+    e.preventDefault();
+    boxDaftar.hidden = true;
+    boxLogin.hidden = false;
+};
+
+// Proses pendaftaran
+document.getElementById("form-daftar").onsubmit = function(e) {
+
+    e.preventDefault();
+
+    const nama = document.getElementById("daftar-nama").value.trim();
+    const username = document.getElementById("daftar-user").value.trim().toLowerCase();
+    const password = document.getElementById("daftar-pass").value;
+
+    let akun = [];
+
+    try {
+        akun = JSON.parse(localStorage.getItem("semua_akun") || "[]");
+    } catch(err) {
+        alert("Penyimpanan akun bermasalah.");
+        return;
+    }
+
+    if (akun.some(a => a.username === username)) {
+        alert("Username sudah digunakan!");
+        return;
+    }
+
+    akun.push({
+        nama: nama,
+        username: username,
+        password: password
+    });
+
+    try {
+        localStorage.setItem("semua_akun", JSON.stringify(akun));
+    } catch(err) {
+        alert("Akun tidak dapat disimpan pada perangkat ini.");
+        return;
+    }
+
+    alert("Pendaftaran berhasil! Silakan login.");
+
+    document.getElementById("login-user").value = username;
+    document.getElementById("login-pass").value = "";
+
+    this.reset();
+
+    boxDaftar.hidden = true;
+    boxLogin.hidden = false;
+};
+
+// Proses login
+document.getElementById("form-login").onsubmit = function(e) {
+
+    e.preventDefault();
+
+    const username = document.getElementById("login-user").value.trim().toLowerCase();
+    const password = document.getElementById("login-pass").value;
+
+    let akun = [];
+
+    try {
+        akun = JSON.parse(localStorage.getItem("semua_akun") || "[]");
+    } catch(err) {
+        alert("Data akun tidak dapat dibaca.");
+        return;
+    }
+
+    const pengguna = akun.find(a =>
+        a.username === username &&
+        a.password === password
+    );
+
+    if (pengguna) {
+
+        try {
+            localStorage.setItem("namaPengguna", pengguna.nama);
+            localStorage.setItem("statusLogin", "aktif");
+        } catch(err) {
+            alert("Tidak dapat menyimpan status login.");
+            return;
+        }
+
+        // MASUK KE BERANDA
+        window.location.href = "./beranda.html";
+
+    } else {
+
+        document.getElementById("pesan").innerText =
+            "Username atau kata sandi salah!";
+
+    }
+};
+
+</script>
+
+</body>
+</html>
+v
