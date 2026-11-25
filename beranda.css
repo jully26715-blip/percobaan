@@ -10,7 +10,16 @@ html {
 }
 
 body {
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    background-color: #090a0f;
+    background-image:
+        linear-gradient(
+            rgba(8, 15, 40, 0.55),
+            rgba(9, 10, 15, 0.78)
+        ),
+        url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjiv7Xo8i9_qaTruV8bkNgO8mDOyNtUKJrxzyc-eArFDKmKrs7RoVabefBxD46LzBZ6iXYpwknoAWZpF8qDu0e0OPTPXvWvPY0gJqCsiiE2kN9AZM7hpJASQYPapXGio0TFcytJx7Q9JaoPUsGR90Ic5GKVoViUiC5jfO0pl-6oH4dCpEuksOzw8weghYXB/s1408/Gemini_Generated_Image_5iv8xz5iv8xz5iv8.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     background-attachment: fixed;
     color: #ffffff;
     min-height: 100vh;
@@ -20,7 +29,8 @@ body {
 }
 
 /* Lapisan Bintang Kecil & Berkelip */
-.stars, .stars2 {
+.stars,
+.stars2 {
     position: fixed;
     top: 0;
     left: 0;
@@ -31,7 +41,7 @@ body {
 }
 
 .stars {
-    background-image: 
+    background-image:
         radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, transparent),
         radial-gradient(1px 1px at 90px 140px, #e0e7ff, transparent),
         radial-gradient(2px 2px at 160px 80px, #ffffff, transparent),
@@ -42,7 +52,7 @@ body {
 }
 
 .stars2 {
-    background-image: 
+    background-image:
         radial-gradient(2px 2px at 50px 180px, #fde047, transparent),
         radial-gradient(1.5px 1.5px at 210px 40px, #93c5fd, transparent),
         radial-gradient(2.5px 2.5px at 290px 260px, #ffffff, transparent);
@@ -64,7 +74,7 @@ body {
     height: 220px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #818cf8, #312e81 65%, #090a0f 95%);
-    box-shadow: 0 0 60px rgba(99, 102, 241, 0.35), inset -20px -20px 40px rgba(0,0,0,0.8);
+    box-shadow: 0 0 60px rgba(99, 102, 241, 0.35), inset -20px -20px 40px rgba(0, 0, 0, 0.8);
     pointer-events: none;
     z-index: 0;
     animation: melayang 8s ease-in-out infinite;
@@ -147,10 +157,12 @@ body {
     border-radius: 8px;
     font-weight: 600 !important;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    transition: filter 0.2s, transform 0.2s;
 }
 
 .btn-logout:hover {
     filter: brightness(1.1);
+    transform: translateY(-1px);
 }
 
 /* Wadah Utama Memanjang ke Bawah */
@@ -272,7 +284,7 @@ body {
     font-weight: 600;
     text-decoration: none;
     font-size: 14px;
-    transition: color 0.2s;
+    transition: color 0.2s, text-shadow 0.2s;
 }
 
 .card-link:hover {
@@ -289,4 +301,42 @@ body {
     color: #94a3b8;
     font-size: 13px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Pastikan konten berada di atas latar belakang */
+.container,
+.footer,
+.user-menu {
+    position: relative;
+    z-index: 10;
+}
+
+/* Penyesuaian Layar Kecil */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 14px 18px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .nav-links {
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .welcome-box,
+    .card-item {
+        padding: 22px;
+    }
+
+    .planet-ornamen {
+        width: 150px;
+        height: 150px;
+        right: -50px;
+    }
+
+    .planet-ornamen::after {
+        width: 230px;
+        height: 48px;
+    }
 }
