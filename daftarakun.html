@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Daftar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Daftar Akun</h2>
+        <form onsubmit="event.preventDefault(); alert('Akun berhasil dibuat! Silakan masuk.'); window.location.href='login.html';">
+            <div class="input-group">
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+            </div>
+
+            <div class="input-group">
+                <label for="username">Username atau Email</label>
+                <input type="text" id="username" name="username" placeholder="Buat username atau email" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" name="password" placeholder="Buat kata sandi" required>
+            </div>
+
+            <button type="submit" class="btn-login">Daftar Sekarang</button>
+        </form>
+
+        <div class="extra-links">
+            <!-- Ini buat balik lagi ke halaman login kalau udah punya akun -->
+            <p>Sudah punya akun? <a href="index.html">Masuk di sini</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
