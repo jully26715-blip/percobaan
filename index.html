@@ -1,44 +1,33 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Web Pertamaku</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!--1. Nama Web di paling atas -->
-<header> 
-<h1> Nama Web kamu </h1>
-</header>
+    <div class="login-card">
+        <h2>Selamat Datang</h2>
+        <form action="#" method="POST">
+            <div class="input-group">
+                <label for="username">Username atau Email</label>
+                <input type="text" id="username" name="username" placeholder="Masukkan username atau email" required>
+            </div>
 
-<!-- 2.foto -->
- <section id="foto">
-  <img src="foto.jpg" alt="Foto Profil" />
- </section>
+            <div class="input-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" name="password" placeholder="Masukkan kata sandi" required>
+            </div>
 
-<!-- 3. Tentang Saya -->
-  <section id="tentang-saya">
-    <h2>Tentang Saya</h2>
-    <p>Halo! Saya [Nama Kamu], seorang [profesi atau hobi]. Saya senang belajar tentang [topik yang diminati].</p>
-  </section>
+            <button type="submit" class="btn-login">Masuk</button>
+        </form>
 
-  <!-- 4. Layanan -->
-  <section id="layanan">
-    <h2>Layanan</h2>
-    <p>Bagian ini berisi fitur, produk, atau layanan utama yang ditawarkan.</p>
-  </section>
+        <div class="extra-links">
+            <p>Belum punya akun? <a href="#">Daftar sekarang</a></p>
+        </div>
+    </div>
 
-  <!-- 5. Kontak -->
-  <section id="kontak">
-    <h2>Kontak</h2>
-    <p>Jika Anda ingin menghubungi saya, silakan kirim email ke [email Anda].</p>
-  </section>
-  
-<!-- footer -->
-<footer>
-  <p>&copy; 2023 Web Pertamaku. Semua hak dilindungi.</p>
-</footer>
 </body>
 </html>
