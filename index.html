@@ -10,9 +10,9 @@
 
     <div class="login-card">
         <h2>Selamat Datang</h2>
-        <form action="#" method="POST">
+        <form onsubmit="cekLogin(event)">
             <div class="input-group">
-                <label for="username">Username atau Email</label>
+                <label for="username">Email</label>
                 <input type="text" id="username" name="username" placeholder="Masukkan username atau email" required>
             </div>
 
@@ -25,7 +25,49 @@
         </form>
 
         <div class="extra-links">
-    <p>Belum punya akun? <a href="daftarakun.html">Daftar sekarang</a></p>
-</div>
+            <p>Belum punya akun? <a href="daftarakun.html">Daftar sekarang</a></p>
+        </div>
     </div>
+
+    <script>
+        function cekLogin(event) {
+            if (event) event.preventDefault();
+
+            const inputUser = document.getElementById('username').value.trim();
+            const inputPass = document.getElementById('password').value;
+
+            if (!inputUser || !inputPass) {
+                alert('Harap isi username dan kata sandi!');
+                return;
+            }
+
+            // Mengambil data akun yang tersimpan saat mendaftar
+            const savedUser = localStorage.getItem('akun_username');
+            const savedPass = localStorage.getItem('akun_password');
+
+            if (!savedUser || !savedPass) {
+                alert('Belum ada akun yang terdaftar. Silakan klik "Daftar sekarang" terlebih dahulu.');
+                return;
+            }
+
+            if (inputUser === savedUser && inputPass === savedPass) {
+                // Langsung menuju halaman beranda
+                window.location.href = 'beranda.html';
+            } else {
+                alert('Username atau kata sandi salah! Pastikan kamu memasukkan akun yang sudah didaftarkan.');
+            }
+        }
+
+        // Menjamin tombol Enter di kolom input langsung memproses login
+        document.querySelectorAll('input').forEach(function(input) {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    cekLogin();
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>
