@@ -1,0 +1,275 @@
+<!-- MENU AKUN -->
+<div class="user-menu">
+
+    <button class="user-button" onclick="toggleAkun()">
+        <span class="user-icon">👤</span>
+        <span id="nama-header">Akun Saya</span>
+        <span>⌄</span>
+    </button>
+
+    <div class="dropdown-akun" id="dropdown-akun">
+
+        <div class="profil-info">
+            <div class="avatar">👤</div>
+            <h3 id="nama-profil">Nama Pengguna</h3>
+            <p id="username-profil">Username</p>
+        </div>
+
+        <hr>
+
+        <button onclick="lihatProfil()">
+            👤 Profil Saya
+        </button>
+
+        <button onclick="pengaturanAkun()">
+            ⚙️ Pengaturan Akun
+        </button>
+
+        <button class="logout" onclick="logout()">
+            🚪 Keluar
+        </button>
+
+    </div>
+
+</div>
+
+<style>
+.user-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.user-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #172b4d;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.user-icon {
+    font-size: 20px;
+}
+
+.dropdown-akun {
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 240px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px #0002;
+    padding: 15px;
+}
+
+.dropdown-akun.aktif {
+    display: block;
+}
+
+.profil-info {
+    text-align: center;
+    padding: 10px;
+}
+
+.avatar {
+    width: 55px;
+    height: 55px;
+    background: #dbeafe;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: auto auto 10px;
+}
+
+.profil-info h3 {
+    font-size: 16px;
+    color: #172b4d;
+}
+
+.profil-info p {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.dropdown-akun hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}
+
+.dropdown-akun button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: white;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    color: #334155;
+}
+
+.dropdown-akun button:hover {
+    background: #eff6ff;
+}
+
+.dropdown-akun .logout {
+    color: #dc2626;
+}
+</style>
+
+<script>
+// Ambil data pengguna yang login
+const nama = localStorage.getItem("namaPengguna") || "Siswa";
+const akun = JSON.parse(localStorage.getItem("semua_akun") || "[]");
+
+const pengguna = akun.find(a => a.nama === nama);
+
+document.getElementById("nama-header").innerText = nama;
+document.getElementById("nama-profil").innerText = nama;
+
+if (pengguna) {
+    document.getElementById("username-profil").innerText =
+        "@" + pengguna.username;
+}
+
+// Buka dan tutup menu
+function toggleAkun() {
+    document.getElementById("dropdown-akun")
+        .classList.toggle("aktif");
+}
+
+// Profil
+function lihatProfil() {
+    alert("Profil pengguna: " + nama);
+}
+
+// Pengaturan
+function pengaturanAkun() {
+    alert("Menu pengaturan akun akan dikembangkan.");
+}
+
+// Keluar
+function logout() {
+    if (confirm("Apakah kamu yakin ingin keluar?")) {
+        localStorage.removeItem("statusLogin");
+        localStorage.removeItem("namaPengguna");
+        window.location.replace("index.html");
+    }
+}
+</script>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - Eksplorasi Tata Surya</title>
+    <link rel="stylesheet" href="beranda.css">
+</head>
+<body>
+
+    <!-- Lapisan Efek Luar Angkasa -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="nebula-glow"></div>
+    <div class="planet-ornamen"></div>
+
+    <!-- Navigasi Atas -->
+    <nav class="navbar">
+        <h1>🪐 Eksplorasi Tata Surya</h1>
+        <div class="nav-links">
+            <a href="#menu-materi">Materi</a>
+            <a href="#menu-game">Game</a>
+            <a href="#menu-ujian">Ujian</a>
+            <a href="index.html" onclick="keluarAkun()" class="btn-logout">Keluar</a>
+        </div>
+    </nav>
+
+    <!-- Konten Utama Memanjang ke Bawah -->
+    <div class="container">
+
+        <!-- Sambutan Astronot -->
+        <section class="welcome-box">
+            <h2>Halo, Astronot <span id="nama-tampil">Penjelajah</span>! 🚀</h2>
+            <p>Selamat datang di stasiun pembelajaran luar angkasa. Gulir ke bawah dan pilih salah satu dari 5 misi utama di bawah ini.</p>
+            <a href="#daftar-menu" class="btn-mulai">Jelajahi 5 Menu Misi ↓</a>
+        </section>
+
+        <!-- 5 Menu Utama Tersusun Vertikal ke Bawah -->
+        <section id="daftar-menu">
+            <h2 class="section-title">Menu Utama Eksplorasi</h2>
+            <div class="vertical-list">
+
+                <!-- MENU 1: MATERI -->
+                <div class="card-item" id="menu-materi">
+                    <span class="card-badge badge-biru">Menu 1 • Materi</span>
+                    <h3>📚 Materi Tata Surya</h3>
+                    <p>Pelajari susunan tata surya, karakteristik Matahari, ciri-ciri delapan planet, serta gerakan rotasi dan revolusi.</p>
+                    <a href="materi.html" class="card-link">Buka Materi →</a>
+                </div>
+
+                <!-- MENU 2: STUDI KASUS (PBL) -->
+                <div class="card-item" id="menu-pbl">
+                    <span class="card-badge badge-ungu">Menu 2 • Studi Kasus</span>
+                    <h3>🔭 Misi Pemecahan Masalah (PBL)</h3>
+                    <p>Amati dan pecahkan permasalahan nyata seputar fenomena luar angkasa dan dampaknya bagi kehidupan di Bumi.</p>
+                    <a href="studi-kasus.html" class="card-link">Mulai Studi Kasus →</a>
+                </div>
+
+                <!-- MENU 3: SIMULASI -->
+                <div class="card-item" id="menu-simulasi">
+                    <span class="card-badge badge-biru">Menu 3 • Eksplorasi</span>
+                    <h3>🌌 Simulasi Lintasan Orbit</h3>
+                    <p>Lihat visualisasi pergerakan planet mengelilingi Matahari serta perbandingan jarak dan ukurannya secara interaktif.</p>
+                    <a href="simulasi.html" class="card-link">Buka Simulasi →</a>
+                </div>
+
+                <!-- MENU 4: GAME -->
+                <div class="card-item" id="menu-game">
+                    <span class="card-badge badge-hijau">Menu 4 • Game</span>
+                    <h3>🎮 Game Petualangan Antariksa</h3>
+                    <p>Uji ketangkasan dan ingatanmu tentang nama planet, urutan orbit, serta benda langit lewat permainan seru.</p>
+                    <a href="game.html" class="card-link">Mainkan Game →</a>
+                </div>
+
+                <!-- MENU 5: UJIAN -->
+                <div class="card-item" id="menu-ujian">
+                    <span class="card-badge badge-emas">Menu 5 • Ujian</span>
+                    <h3>📝 Ujian & Evaluasi Akhir</h3>
+                    <p>Kerjakan soal evaluasi untuk mengukur pemahamanmu secara menyeluruh dan lihat skor akhir misimu.</p>
+                    <a href="ujian.html" class="card-link">Mulai Ujian →</a>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        <p>Media Pembelajaran Interaktif Tata Surya • Kelas VI SD</p>
+    </footer>
+
+    <script>
+        const namaUser = localStorage.getItem('namaPengguna');
+        if (namaUser) {
+            document.getElementById('nama-tampil').textContent = namaUser;
+        }
+
+        function keluarAkun() {
+            localStorage.removeItem('namaPengguna');
+        }
+    </script>
+
+</body>
+</html>
