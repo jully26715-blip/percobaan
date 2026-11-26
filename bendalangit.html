@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benda Langit Selain Planet & Matahari</title>
+  <style>
+    :root {
+      --bg-dark: #070b19;
+      --bg-card: #111830;
+      --accent: #60a5fa;
+      --accent-2: #c084fc;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top, #131d3b 0%, var(--bg-dark) 75%);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.65;
+      padding: 24px 16px 60px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding: 26px 20px;
+      background: rgba(17, 24, 48, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    header h1 {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    .materi-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .materi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 720px) {
+      .materi-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Slot Tempat Gambar */
+    .image-slot {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 14px;
+      border: 2px dashed rgba(96, 165, 250, 0.45);
+      background: rgba(7, 11, 25, 0.65);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .image-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(96, 165, 250, 0.15);
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .materi-content h2 {
+      font-size: 1.35rem;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .materi-content p {
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-size: 0.96rem;
+    }
+
+    .materi-content ul {
+      margin-left: 20px;
+    }
+
+    .materi-content li {
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Benda Langit Selain Planet &amp; Matahari</h1>
+      <p>Mengenal berbagai benda langit yang ikut bergerak dalam sistem Tata Surya kita.</p>
+    </header>
+
+    <main class="materi-list">
+      <!-- 1. SATELIT ALAMI -->
+      <article class="materi-card">
+        <div class="image-slot">
+          <!-- Ganti src di bawah dengan nama file gambarmu, contoh: src="gambar/bulan.jpg" -->
+          <img src="https://placehold.co/600x450/0f172a/60a5fa?text=Masukkan+Gambar+Satelit+Alami" alt="Gambar Satelit Alami" />
+        </div>
+        <div class="materi-content">
+          <span class="badge">Pengiring Planet</span>
+          <h2>1. Satelit Alami (Bulan)</h2>
+          <p>Benda langit yang mengorbit mengelilingi planet dan ikut bergerak bersama planet mengelilingi Matahari.</p>
+          <ul>
+            <li>Tidak memancarkan cahaya sendiri, melainkan memantulkan cahaya Matahari.</li>
+            <li>Bumi memiliki 1 satelit alami yaitu Bulan, sedangkan Jupiter dan Saturnus memiliki puluhan satelit alami.</li>
+            <li>Gravitasi Bulan memengaruhi terjadinya pasang surut air laut di Bumi.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 2. ASTEROID -->
+      <article class="materi-card">
+        <div class="image-slot">
+          <!-- Ganti src di bawah dengan nama file gambarmu, contoh: src="gambar/asteroid.jpg" -->
+          <img src="https://placehold.co/600x450/0f172a/60a5fa?text=Masukkan+Gambar+Asteroid" alt="Gambar Asteroid" />
+        </div>
+        <div class="materi-content">
+          <span class="badge">Batuan Antariksa</span>
+          <h2>2. Asteroid</h2>
+          <p>Benda langit berukuran kecil yang tersusun dari batuan dan logam, serta mengorbit Matahari.</p>
+          <ul>
+            <li>Sebagian besar berkumpul di Sabuk Asteroid yang terletak di antara orbit Mars dan Jupiter.</li>
+            <li>Ukurannya jauh lebih kecil dibanding planet, mulai dari beberapa meter hingga ratusan kilometer.</li>
+            <li>Contoh asteroid terkenal antara lain Vesta, Pallas, dan Eros.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 3. KOMET -->
+      <article class="materi-card">
+        <div class="image-slot">
+          <!-- Ganti src di bawah dengan nama file gambarmu, contoh: src="gambar/komet.jpg" -->
+          <img src="https://placehold.co/600x450/0f172a/60a5fa?text=Masukkan+Gambar+Komet" alt="Gambar Komet" />
+        </div>
+        <div class="materi-content">
+          <span class="badge">Bola Es &amp; Debu</span>
+          <h2>3. Komet</h2>
+          <p>Benda langit yang tersusun dari es, gas beku, dan debu dengan lintasan orbit yang sangat lonjong mengelilingi Matahari.</p>
+          <ul>
+            <li>Sering dijuluki "bintang berekor" karena saat mendekati Matahari, esnya menguap dan membentuk ekor bercahaya.</li>
+            <li>Ekor komet selalu mengarah menjauhi Matahari akibat dorongan angin surya.</li>
+            <li>Contoh komet terkenal adalah Komet Halley yang muncul sekitar 75–76 tahun sekali.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 4. METEOROID, METEOR, DAN METEORIT -->
+      <article class="materi-card">
+        <div class="image-slot">
+          <!-- Ganti src di bawah dengan nama file gambarmu, contoh: src="gambar/meteor.jpg" -->
+          <img src="https://placehold.co/600x450/0f172a/60a5fa?text=Masukkan+Gambar+Meteor" alt="Gambar Meteoroid, Meteor, dan Meteorit" />
+        </div>
+        <div class="materi-content">
+          <span class="badge">Fenomena Atmosfer</span>
+          <h2>4. Meteoroid, Meteor, dan Meteorit</h2>
+          <p>Tiga istilah berbeda untuk pecahan batuan atau logam antariksa berdasarkan letak dan kondisinya:</p>
+          <ul>
+            <li><strong>Meteoroid:</strong> potongan batu atau logam kecil yang melayang bebas di luar angkasa.</li>
+            <li><strong>Meteor:</strong> meteoroid yang masuk ke atmosfer Bumi dan terbakar akibat gesekan udara (sering disebut "bintang jatuh").</li>
+            <li><strong>Meteorit:</strong> sisa meteor yang tidak habis terbakar dan berhasil jatuh sampai ke permukaan Bumi.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 5. PLANET KERDIL -->
+      <article class="materi-card">
+        <div class="image-slot">
+          <!-- Ganti src di bawah dengan nama file gambarmu, contoh: src="gambar/pluto.jpg" -->
+          <img src="https://placehold.co/600x450/0f172a/60a5fa?text=Masukkan+Gambar+Planet+Kerdil" alt="Gambar Planet Kerdil" />
+        </div>
+        <div class="materi-content">
+          <span class="badge">Kategori Khusus</span>
+          <h2>5. Planet Kerdil (Dwarf Planet)</h2>
+          <p>Benda langit yang mengorbit Matahari dan berbentuk hampir bulat, tetapi belum mampu membersihkan jalur orbitnya dari benda-benda kecil di sekitarnya.</p>
+          <ul>
+            <li>Kategori ini ditetapkan secara resmi sejak tahun 2006.</li>
+            <li>Contoh planet kerdil antara lain Pluto, Ceres, Eris, Haumea, dan Makemake.</li>
+          </ul>
+        </div>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
