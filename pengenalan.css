@@ -1,0 +1,596 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
+:root {
+    --lebar-seragam: 560px;
+    --radius-luar: 20px;
+    --radius-dalam: 14px;
+    --kartu-bg: rgba(15, 23, 56, 0.86);
+    --kotak-teks-bg: #e8f4fd;
+    --kotak-teks-hover: #d8ecfc;
+    --garis-kotak: #93c5fd;
+    --garis-angkasa: rgba(129, 140, 248, 0.42);
+    --teks-kotak: #1e293b;
+
+    /* Warna khusus pertanyaan, pilihan ganda, & teks perintah/ajakan */
+    --kuis-bg: #1e2952;
+    --kuis-hover: #2b3b75;
+    --kuis-border: rgba(125, 211, 252, 0.45);
+    --kuis-teks: #f1f5f9;
+}
+
+html {
+    min-height: 100%;
+    background-color: #040714;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px 12px 60px;
+    min-height: 100vh;
+    width: 100%;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    color: #e2e8f0;
+    background-color: #040714;
+    background-image:
+        radial-gradient(circle at 18% 12%, rgba(79, 70, 229, 0.28), transparent 38%),
+        radial-gradient(circle at 82% 24%, rgba(14, 165, 233, 0.20), transparent 40%),
+        radial-gradient(circle at 30% 65%, rgba(139, 92, 246, 0.22), transparent 42%),
+        radial-gradient(circle at 78% 85%, rgba(56, 189, 248, 0.18), transparent 42%),
+        linear-gradient(180deg, #040714 0%, #090e26 50%, #050817 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/* ANIMASI BINTANG & PLANET LATAR BELAKANG */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        radial-gradient(1.5px 1.5px at 8% 14%, #ffffff, transparent),
+        radial-gradient(2px 2px at 22% 28%, #bae6fd, transparent),
+        radial-gradient(1px 1px at 36% 10%, #ffffff, transparent),
+        radial-gradient(2px 2px at 54% 22%, #fef08a, transparent),
+        radial-gradient(1.5px 1.5px at 71% 15%, #ffffff, transparent),
+        radial-gradient(2px 2px at 86% 32%, #c4b5fd, transparent),
+        radial-gradient(1px 1px at 15% 58%, #ffffff, transparent),
+        radial-gradient(2px 2px at 44% 64%, #bae6fd, transparent),
+        radial-gradient(1.5px 1.5px at 66% 52%, #ffffff, transparent),
+        radial-gradient(2px 2px at 90% 74%, #fef08a, transparent),
+        radial-gradient(1px 1px at 29% 86%, #ffffff, transparent),
+        radial-gradient(1.5px 1.5px at 77% 91%, #c4b5fd, transparent);
+    animation: kelipBintang 3.6s ease-in-out infinite alternate;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 12%;
+    right: -36px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle at 32% 32%, #93c5fd 0%, #3b82f6 55%, #1e1b4b 100%);
+    box-shadow: 0 0 28px rgba(96, 165, 250, 0.35);
+    animation: planetMengambang 8s ease-in-out infinite;
+}
+
+@keyframes kelipBintang {
+    0% {
+        opacity: 0.45;
+        transform: scale(0.98);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}
+
+@keyframes planetMengambang {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+        transform: translate(-18px, 14px) rotate(12deg);
+    }
+}
+
+@keyframes mengambangKarakter {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes jalanSemut {
+    0% {
+        left: -24px;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* KONTAINER UTAMA */
+.halaman-semut {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--lebar-seragam);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* LEBAR SERAGAM, TINGGI MENGIKUTI ISI */
+.blok-seragam {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    border-radius: var(--radius-luar);
+    background: var(--kartu-bg);
+    border: 1.5px solid var(--garis-angkasa);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.blok-seragam:hover {
+    transform: translateY(-2px);
+    border-color: rgba(165, 180, 252, 0.75);
+}
+
+/* 1. DIALOG KARAKTER */
+.dialog-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px;
+}
+
+.dialog-box.kanan {
+    flex-direction: row-reverse;
+}
+
+.karakter-wrap {
+    flex: 0 0 156px;
+    width: 156px;
+    height: 156px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: mengambangKarakter 3.2s ease-in-out infinite;
+}
+
+.karakter-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: scale(1.18);
+    display: block;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+}
+
+.balon-teks {
+    position: relative;
+    flex: 1;
+    height: auto;
+    background: var(--kotak-teks-bg);
+    color: var(--teks-kotak);
+    border: 1.5px solid var(--garis-kotak);
+    border-radius: var(--radius-dalam);
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.55;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+.dialog-box.kiri .balon-teks::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 24px;
+    width: 11px;
+    height: 11px;
+    background: var(--kotak-teks-bg);
+    border-left: 1.5px solid var(--garis-kotak);
+    border-bottom: 1.5px solid var(--garis-kotak);
+    transform: rotate(45deg);
+}
+
+.dialog-box.kanan .balon-teks::before {
+    content: "";
+    position: absolute;
+    right: -7px;
+    top: 24px;
+    width: 11px;
+    height: 11px;
+    background: var(--kotak-teks-bg);
+    border-right: 1.5px solid var(--garis-kotak);
+    border-top: 1.5px solid var(--garis-kotak);
+    transform: rotate(45deg);
+}
+
+/* 2. KARAKTER PENUNJUK */
+.karakter-nunjuk {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.karakter-nunjuk a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.karakter-nunjuk img {
+    display: block;
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    animation: mengambangKarakter 3.4s ease-in-out infinite;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+}
+
+/* 3. ANIMASI TOPLES & SEMUT */
+#petualangan-semut {
+    padding: 18px 16px;
+    text-align: center;
+}
+
+#petualangan-semut .judul-semut,
+#petualangan-semut .pengantar-semut {
+    margin: 0;
+}
+
+#petualangan-semut .wadah-toples {
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+    overflow: hidden;
+    line-height: 0;
+}
+
+#petualangan-semut .gambar-toples {
+    display: block;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+#petualangan-semut .area-semut {
+    position: absolute;
+    z-index: 3;
+    left: 12%;
+    width: 76%;
+    top: 82%;
+    height: 8%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#petualangan-semut .semut {
+    position: absolute;
+    display: block;
+    width: 16px;
+    height: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    transform-origin: center center;
+    will-change: left, bottom, transform;
+}
+
+/* 4. KARTU KUIS (PERTANYAAN & PILIHAN GANDA BIRU MALAM NYAMAN) */
+.kartu-kuis {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pertanyaan-box {
+    background: var(--kuis-bg);
+    color: var(--kuis-teks);
+    border: 1.5px solid var(--kuis-border);
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.daftar-pilihan {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pilihan-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    font-weight: 700;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    background: var(--kuis-bg);
+    color: var(--kuis-teks);
+    border: 1.5px solid var(--kuis-border);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    line-height: 1.4;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.pilihan-btn:hover:not(:disabled) {
+    background: var(--kuis-hover);
+    border-color: #7dd3fc;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.pilihan-btn:disabled {
+    cursor: default;
+    color: var(--kuis-teks);
+}
+
+.pilihan-btn.jawaban-benar {
+    background: #14532d;
+    border-color: #4ade80;
+    color: #f0fdf4;
+}
+
+.pilihan-btn.jawaban-salah {
+    background: #7f1d1d;
+    border-color: #f87171;
+    color: #fef2f2;
+}
+
+.hasil-kuis {
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    line-height: 1.4;
+    display: none;
+    background: var(--kuis-bg);
+    color: var(--kuis-teks);
+    border: 1.5px solid var(--kuis-border);
+}
+
+/* 5. SLIDER GAMBAR */
+.slider-wrapper {
+    padding: 14px;
+}
+
+.slider {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    border-radius: var(--radius-dalam);
+}
+
+.slider img {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    object-fit: contain;
+    border-radius: var(--radius-dalam);
+}
+
+/* 6. TEKS PERINTAH / AJAKAN */
+.teks-pengantar {
+    margin: 0;
+    padding: 16px 20px;
+    text-align: center;
+    font-size: 15.5px;
+    font-weight: 700;
+    line-height: 1.5;
+    background: var(--kuis-bg);
+    color: var(--kuis-teks);
+}
+
+/* 7. VIDEO ANIMASI */
+.video-wrapper {
+    padding: 18px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-wrapper object {
+    max-width: 100%;
+    border-radius: var(--radius-dalam);
+}
+
+/* 8. TRANSISI & ANIMASI GARIS PUTUS-PUTUS */
+.transisi-wrapper {
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.transisi-konten {
+    text-align: center;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    color: var(--kuis-teks);
+    background: var(--kuis-bg);
+    border: 1.5px solid var(--kuis-border);
+    border-radius: var(--radius-dalam);
+    padding: 12px 16px;
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.5;
+    width: 100%;
+}
+
+.transisi-konten p {
+    margin: 0;
+}
+
+.animasi-semut-container {
+    position: relative;
+    width: 85%;
+    max-width: 420px;
+    height: 30px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.garis-putus {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-bottom: 2px dashed #93c5fd;
+    opacity: 0.65;
+}
+
+.semut-berjalan {
+    position: absolute;
+    bottom: -1px;
+    font-size: 15px;
+    transform: scaleX(-1);
+    animation: jalanSemut 8s linear infinite;
+}
+
+.semut-2 {
+    animation-delay: 3s;
+}
+
+/* 9. KARAKTER & DUA BALON REFLEKSI */
+.karakter-pembicara {
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    box-sizing: border-box;
+    font-family: 'Comic Neue', cursive, sans-serif;
+}
+
+.gambar-karakter {
+    width: 210px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    animation: mengambangKarakter 3.3s ease-in-out infinite;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+}
+
+.kumpulan-balon {
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.balon-percakapan {
+    position: relative;
+    width: 100%;
+    background: var(--kotak-teks-bg);
+    border: 1.5px solid var(--garis-kotak);
+    border-radius: var(--radius-dalam);
+    padding: 12px 14px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+.isi-balon {
+    font-size: 13.5px;
+    font-weight: 700;
+    line-height: 1.55;
+    color: var(--teks-kotak);
+    text-align: left;
+}
+
+.balon-percakapan::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid var(--garis-kotak);
+}
+
+.balon-percakapan::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -8px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 9px solid var(--kotak-teks-bg);
+}
+
+/* RESPONSIF HP */
+@media (max-width: 520px) {
+    .dialog-box {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .karakter-wrap {
+        flex: 0 0 112px;
+        width: 112px;
+        height: 112px;
+    }
+
+    .balon-teks {
+        font-size: 13.5px;
+        padding: 11px 13px;
+    }
+
+    .pilihan-btn {
+        font-size: 12.5px;
+        padding: 8px 11px;
+    }
+
+    .gambar-karakter {
+        width: 170px;
+    }
+}

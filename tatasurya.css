@@ -5,9 +5,17 @@
     --radius-luar: 20px;
     --radius-dalam: 14px;
     --kartu-bg: rgba(15, 23, 56, 0.86);
-    --kotak-teks-bg: #ffffff;
+    --kotak-teks-bg: #e8f4fd;
+    --kotak-teks-hover: #d8ecfc;
+    --garis-kotak: #93c5fd;
     --garis-angkasa: rgba(129, 140, 248, 0.42);
-    --teks-kotak: #111827;
+    --teks-kotak: #1e293b;
+
+    /* Warna khusus bagian pertanyaan, pilihan ganda, & perintah/ajakan */
+    --kuis-bg: #1e2952;
+    --kuis-hover: #2b3b75;
+    --kuis-border: rgba(125, 211, 252, 0.45);
+    --kuis-teks: #f1f5f9;
 }
 
 html {
@@ -25,7 +33,7 @@ body {
     min-height: 100vh;
     width: 100%;
     font-family: 'Comic Neue', cursive, sans-serif;
-    color: #ffffff;
+    color: #e2e8f0;
     background-color: #040714;
     background-image:
         radial-gradient(circle at 18% 12%, rgba(79, 70, 229, 0.28), transparent 38%),
@@ -134,7 +142,7 @@ body::after {
     border-color: rgba(165, 180, 252, 0.75);
 }
 
-/* 1. DIALOG KARAKTER (KOTAK PUTIH, TULISAN HITAM) */
+/* 1. DIALOG KARAKTER */
 .dialog-box {
     display: flex;
     align-items: center;
@@ -174,13 +182,13 @@ body::after {
     height: auto;
     background: var(--kotak-teks-bg);
     color: var(--teks-kotak);
-    border: 2px solid #cbd5e1;
+    border: 1.5px solid var(--garis-kotak);
     border-radius: var(--radius-dalam);
     padding: 14px 16px;
     font-size: 15px;
     font-weight: 700;
     line-height: 1.55;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
 }
 
 .dialog-box.kiri .balon-teks::before {
@@ -188,11 +196,11 @@ body::after {
     position: absolute;
     left: -7px;
     top: 24px;
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     background: var(--kotak-teks-bg);
-    border-left: 2px solid #cbd5e1;
-    border-bottom: 2px solid #cbd5e1;
+    border-left: 1.5px solid var(--garis-kotak);
+    border-bottom: 1.5px solid var(--garis-kotak);
     transform: rotate(45deg);
 }
 
@@ -201,11 +209,11 @@ body::after {
     position: absolute;
     right: -7px;
     top: 24px;
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     background: var(--kotak-teks-bg);
-    border-right: 2px solid #cbd5e1;
-    border-top: 2px solid #cbd5e1;
+    border-right: 1.5px solid var(--garis-kotak);
+    border-top: 1.5px solid var(--garis-kotak);
     transform: rotate(45deg);
 }
 
@@ -229,7 +237,7 @@ body::after {
     border-radius: var(--radius-dalam);
 }
 
-/* 3. KARTU KUIS (KOTAK PUTIH, TULISAN HITAM) */
+/* 3. KARTU KUIS (PERTANYAAN & PILIHAN GANDA WARNA GELAP NYAMAN) */
 .kartu-kuis {
     padding: 16px;
     display: flex;
@@ -238,9 +246,9 @@ body::after {
 }
 
 .pertanyaan-box {
-    background: var(--kotak-teks-bg);
-    color: var(--teks-kotak);
-    border: 2px solid #cbd5e1;
+    background: var(--kuis-bg);
+    color: var(--kuis-teks);
+    border: 1.5px solid var(--kuis-border);
     padding: 12px 14px;
     border-radius: 12px;
     font-size: 14.5px;
@@ -261,9 +269,9 @@ body::after {
     font-size: 13.5px;
     font-weight: 700;
     font-family: 'Comic Neue', cursive, sans-serif;
-    background: var(--kotak-teks-bg);
-    color: var(--teks-kotak);
-    border: 2px solid #cbd5e1;
+    background: var(--kuis-bg);
+    color: var(--kuis-teks);
+    border: 1.5px solid var(--kuis-border);
     border-radius: 10px;
     cursor: pointer;
     text-align: left;
@@ -272,27 +280,27 @@ body::after {
 }
 
 .pilihan-btn:hover:not(:disabled) {
-    background: #f1f5f9;
-    border-color: #60a5fa;
-    color: var(--teks-kotak);
+    background: var(--kuis-hover);
+    border-color: #7dd3fc;
+    color: #ffffff;
     transform: translateY(-1px);
 }
 
 .pilihan-btn:disabled {
     cursor: default;
-    color: var(--teks-kotak);
+    color: var(--kuis-teks);
 }
 
 .pilihan-btn.jawaban-benar {
-    background: #dcfce7;
-    border-color: #22c55e;
-    color: #111827;
+    background: #14532d;
+    border-color: #4ade80;
+    color: #f0fdf4;
 }
 
 .pilihan-btn.jawaban-salah {
-    background: #fee2e2;
-    border-color: #ef4444;
-    color: #111827;
+    background: #7f1d1d;
+    border-color: #f87171;
+    color: #fef2f2;
 }
 
 .hasil-kuis {
@@ -302,9 +310,9 @@ body::after {
     font-weight: 700;
     line-height: 1.4;
     display: none;
-    background: var(--kotak-teks-bg);
-    color: var(--teks-kotak);
-    border: 2px solid #cbd5e1;
+    background: var(--kuis-bg);
+    color: var(--kuis-teks);
+    border: 1.5px solid var(--kuis-border);
 }
 
 /* 4. ANIMASI ANAK & LANGIT */
@@ -548,7 +556,7 @@ body::after {
     border-radius: 14px;
     background: var(--kotak-teks-bg);
     color: var(--teks-kotak);
-    border: 2px solid #cbd5e1;
+    border: 1.5px solid var(--garis-kotak);
     font-size: 13.5px;
     font-weight: 700;
     line-height: 1.5;
@@ -558,11 +566,11 @@ body::after {
 #petualangan-langit .percakapan strong {
     display: block;
     margin-bottom: 3px;
-    color: #000000;
+    color: #0f172a;
     font-size: 14px;
 }
 
-/* 5. TEKS PENGANTAR (KOTAK PUTIH, TULISAN HITAM) */
+/* 5. TEKS PERINTAH / AJAKAN (TIDAK PUTIH, BIRU MALAM NYAMAN) */
 .teks-pengantar {
     margin: 0;
     padding: 16px 20px;
@@ -570,8 +578,8 @@ body::after {
     font-size: 16px;
     font-weight: 700;
     line-height: 1.5;
-    background: var(--kotak-teks-bg);
-    color: var(--teks-kotak);
+    background: var(--kuis-bg);
+    color: var(--kuis-teks);
 }
 
 /* 6. ANIMASI TATA SURYA INTERAKTIF */
@@ -603,7 +611,7 @@ body::after {
     border-radius: 8px;
     border: 1px solid rgba(148, 163, 184, 0.45);
     background: rgba(15, 23, 42, 0.85);
-    color: #ffffff;
+    color: #f8fafc;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
@@ -619,7 +627,7 @@ body::after {
     padding: 4px 9px;
     border-radius: 8px;
     background: rgba(15, 23, 42, 0.8);
-    color: #ffffff;
+    color: #e2e8f0;
     font-size: 11px;
     pointer-events: none;
 }
