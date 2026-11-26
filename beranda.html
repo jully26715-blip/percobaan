@@ -114,9 +114,58 @@
             font-weight: 600;
         }
 
-        /* Jarak atas ekstra agar kotak sambutan tidak tertabrak tombol akun */
+        /* GAYA TILE MENU (SEPERTI CONTOH MATERI) */
+        .beranda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 16px;
+        }
+
+        .tile-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            padding: 24px 18px;
+            border-radius: 20px;
+            background: rgba(23, 28, 54, 0.85);
+            border: 1px solid rgba(165, 180, 252, 0.35);
+            color: #ffffff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .tile-btn:hover {
+            transform: translateY(-5px);
+            border-color: #818cf8;
+            background: rgba(49, 46, 129, 0.65);
+        }
+
+        .tile-icon-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            object-fit: cover;
+            margin-bottom: 14px;
+            border: 1px solid rgba(165, 180, 252, 0.45);
+        }
+
+        .tile-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .tile-desc {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.45;
+        }
+
         .container {
-            padding-top: 85px;
+            padding-top: 40px;
         }
     </style>
 </head>
@@ -158,76 +207,69 @@
             </button>
         </div>
     </div>
- <div style="width:100%; text-align:center;">
-  <img
-    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjiv7Xo8i9_qaTruV8bkNgO8mDOyNtUKJrxzyc-eArFDKmKrs7RoVabefBxD46LzBZ6iXYpwknoAWZpF8qDu0e0OPTPXvWvPY0gJqCsiiE2kN9AZM7hpJASQYPapXGio0TFcytJx7Q9JaoPUsGR90Ic5GKVoViUiC5jfO0pl-6oH4dCpEuksOzw8weghYXB/s1408/Gemini_Generated_Image_5iv8xz5iv8xz5iv8.jpg"
-    alt="Gambar Tata Surya"
-    style="display:block; width:100%; height:auto;"
-  >
-</div>
-</div>   
-</div>
 
-    <!-- Konten Utama Memanjang ke Bawah -->
+    <!-- Banner Tata Surya -->
+    <div style="width:100%; text-align:center;">
+        <img
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjiv7Xo8i9_qaTruV8bkNgO8mDOyNtUKJrxzyc-eArFDKmKrs7RoVabefBxD46LzBZ6iXYpwknoAWZpF8qDu0e0OPTPXvWvPY0gJqCsiiE2kN9AZM7hpJASQYPapXGio0TFcytJx7Q9JaoPUsGR90Ic5GKVoViUiC5jfO0pl-6oH4dCpEuksOzw8weghYXB/s1408/Gemini_Generated_Image_5iv8xz5iv8xz5iv8.jpg"
+            alt="Gambar Tata Surya"
+            style="display:block; width:100%; height:auto;"
+        >
+    </div>
+
+    <!-- Konten Utama -->
     <div class="container">
 
         <!-- Sambutan Astronot -->
         <section class="welcome-box">
             <h2>Halo, Astronot <span id="nama-tampil">Penjelajah</span>!</h2>
-            <p>Selamat datang di stasiun pembelajaran luar angkasa. Gulir ke bawah dan pilih salah satu fitur di bawah ini.</p>
+            <p>Selamat datang di stasiun pembelajaran luar angkasa. Pilih salah satu fitur di bawah ini.</p>
         </section>
 
-        <!-- 5 Menu Utama Tersusun Vertikal ke Bawah -->
+        <!-- Menu Utama Model Tile -->
         <section id="daftar-menu">
             <h2 class="section-title">Menu Utama</h2>
-            <div class="vertical-list">
 
-                <!-- MENU 1: MATERI -->
-                <div class="card-item" id="menu-materi">
-                    <h3>Materi Tata Surya</h3>
-                    <p>Pelajari susunan tata surya, karakteristik Matahari, ciri-ciri delapan planet, serta gerakan rotasi dan revolusi.</p>
-                    <a href="materi.html" class="card-link">Buka Materi →</a>
-                </div>
+            <div class="beranda-grid">
+                <a href="materi.html" class="tile-btn tile-materi">
+                    <img src="icon-materi.jpg" alt="Materi Tata Surya" class="tile-icon-img">
+                    <span class="tile-title">Materi Tata Surya</span>
+                    <span class="tile-desc">Matahari, planet, rotasi &amp; benda langit</span>
+                </a>
 
-                <!-- MENU 2: STUDI KASUS (PBL) -->
-                <div class="card-item" id="menu-pbl">
-                    <h3>Pemecahan Masalah (PBL)</h3>
-                    <p>Amati dan pecahkan permasalahan nyata seputar fenomena luar angkasa dan dampaknya bagi kehidupan di Bumi.</p>
-                    <a href="studi-kasus.html" class="card-link">Mulai Studi Kasus →</a>
-                </div>
+                <a href="game.html" class="tile-btn tile-game">
+                    <img src="icon-game.jpg" alt="Game Interaktif" class="tile-icon-img">
+                    <span class="tile-title">Game Interaktif</span>
+                    <span class="tile-desc">Tantangan seru &amp; kuis tata surya</span>
+                </a>
 
-                <!-- MENU 3: SIMULASI -->
-                <div class="card-item" id="menu-simulasi">
-                    <h3>Lintasan Orbit</h3>
-                    <p>Lihat visualisasi pergerakan planet mengelilingi Matahari serta perbandingan jarak dan ukurannya secara interaktif.</p>
-                    <a href="simulasi.html" class="card-link">Buka Simulasi →</a>
-                </div>
+                <a href="simulasi.html" class="tile-btn tile-simulasi">
+                    <img src="icon-simulasi.jpg" alt="Lintasan Orbit" class="tile-icon-img">
+                    <span class="tile-title">Lintasan Orbit</span>
+                    <span class="tile-desc">Visualisasi gerak &amp; ukuran planet</span>
+                </a>
 
-                <!-- MENU 4: GAME -->
-                <div class="card-item" id="menu-game">
-                    <h3>Petualangan Antariksa</h3>
-                    <p>Uji ketangkasan dan ingatanmu tentang nama planet, urutan orbit, serta benda langit lewat permainan seru.</p>
-                    <a href="game.html" class="card-link">Mainkan Game →</a>
-                </div>
+                <a href="petualangan.html" class="tile-btn tile-petualangan">
+                    <img src="icon-petualangan.jpg" alt="Petualangan Antariksa" class="tile-icon-img">
+                    <span class="tile-title">Petualangan Antariksa</span>
+                    <span class="tile-desc">Uji ketangkasan &amp; ingatan orbit</span>
+                </a>
 
-                <!-- MENU 5: UJIAN -->
-                <div class="card-item" id="menu-ujian">
-                    <h3>Evaluasi Akhir</h3>
-                    <p>Kerjakan soal evaluasi untuk mengukur pemahamanmu secara menyeluruh dan lihat skor akhir.</p>
-                    <a href="ujian.html" class="card-link">Mulai Ujian →</a>
-                </div>
-
+                <a href="ujian.html" class="tile-btn tile-ujian">
+                    <img src="icon-ujian.jpg" alt="Evaluasi Akhir" class="tile-icon-img">
+                    <span class="tile-title">Evaluasi Akhir</span>
+                    <span class="tile-desc">Soal evaluasi &amp; lihat skor akhir</span>
+                </a>
             </div>
         </section>
 
     </div>
 
     <footer class="footer">
-        <p>Media Pembelajaran Interaktif Tata Surya </p>
+        <p>Media Pembelajaran Interaktif Tata Surya</p>
     </footer>
 
     <script>
-        // Ambil data pengguna yang sedang login
         const nama = localStorage.getItem("namaPengguna") || "Penjelajah";
         const akun = JSON.parse(localStorage.getItem("semua_akun") || "[]");
         const pengguna = akun.find(a => a.nama === nama);
@@ -240,12 +282,10 @@
             document.getElementById("username-profil").innerText = "@" + pengguna.username;
         }
 
-        // Buka & tutup dropdown menu akun
         function toggleAkun() {
             document.getElementById("dropdown-akun").classList.toggle("aktif");
         }
 
-        // Tutup dropdown otomatis jika klik di luar menu akun
         document.addEventListener("click", function(event) {
             const wrapper = document.getElementById("user-menu-wrapper");
             const dropdown = document.getElementById("dropdown-akun");
