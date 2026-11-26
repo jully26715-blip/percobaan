@@ -1,0 +1,647 @@
+v@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
+:root {
+    --lebar-seragam: 560px;
+    --radius-luar: 20px;
+    --radius-dalam: 14px;
+    --kartu-bg: rgba(15, 23, 56, 0.86);
+    --kotak-teks-bg: #e8f4fd;
+    --garis-kotak: #93c5fd;
+    --garis-angkasa: rgba(129, 140, 248, 0.42);
+    --teks-kotak: #1e293b;
+
+    /* Warna khusus ajakan, subjudul, & panel info */
+    --panel-bg: #1e2952;
+    --panel-border: rgba(125, 211, 252, 0.45);
+    --panel-teks: #f1f5f9;
+}
+
+html {
+    min-height: 100%;
+    background-color: #040714;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px 12px 60px;
+    min-height: 100vh;
+    width: 100%;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    color: #e2e8f0;
+    background-color: #040714;
+    background-image:
+        radial-gradient(circle at 18% 12%, rgba(79, 70, 229, 0.28), transparent 38%),
+        radial-gradient(circle at 82% 24%, rgba(14, 165, 233, 0.20), transparent 40%),
+        radial-gradient(circle at 30% 65%, rgba(139, 92, 246, 0.22), transparent 42%),
+        radial-gradient(circle at 78% 85%, rgba(56, 189, 248, 0.18), transparent 42%),
+        linear-gradient(180deg, #040714 0%, #090e26 50%, #050817 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/* ANIMASI BINTANG & PLANET LATAR BELAKANG */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        radial-gradient(1.5px 1.5px at 8% 14%, #ffffff, transparent),
+        radial-gradient(2px 2px at 22% 28%, #bae6fd, transparent),
+        radial-gradient(1px 1px at 36% 10%, #ffffff, transparent),
+        radial-gradient(2px 2px at 54% 22%, #fef08a, transparent),
+        radial-gradient(1.5px 1.5px at 71% 15%, #ffffff, transparent),
+        radial-gradient(2px 2px at 86% 32%, #c4b5fd, transparent),
+        radial-gradient(1px 1px at 15% 58%, #ffffff, transparent),
+        radial-gradient(2px 2px at 44% 64%, #bae6fd, transparent),
+        radial-gradient(1.5px 1.5px at 66% 52%, #ffffff, transparent),
+        radial-gradient(2px 2px at 90% 74%, #fef08a, transparent),
+        radial-gradient(1px 1px at 29% 86%, #ffffff, transparent),
+        radial-gradient(1.5px 1.5px at 77% 91%, #c4b5fd, transparent);
+    animation: kelipBintang 3.6s ease-in-out infinite alternate;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 12%;
+    right: -36px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle at 32% 32%, #93c5fd 0%, #3b82f6 55%, #1e1b4b 100%);
+    box-shadow: 0 0 28px rgba(96, 165, 250, 0.35);
+    animation: planetMengambang 8s ease-in-out infinite;
+}
+
+@keyframes kelipBintang {
+    0% {
+        opacity: 0.45;
+        transform: scale(0.98);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}
+
+@keyframes planetMengambang {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+        transform: translate(-18px, 14px) rotate(12deg);
+    }
+}
+
+@keyframes mengambangKarakter {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes semutJalan {
+    from {
+        left: -25px;
+    }
+    to {
+        left: 100%;
+    }
+}
+
+/* KONTAINER UTAMA */
+.halaman-planet {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--lebar-seragam);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* LEBAR SERAGAM, TINGGI MENGIKUTI ISI */
+.blok-seragam {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    border-radius: var(--radius-luar);
+    background: var(--kartu-bg);
+    border: 1.5px solid var(--garis-angkasa);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.blok-seragam:hover {
+    transform: translateY(-2px);
+    border-color: rgba(165, 180, 252, 0.75);
+}
+
+/* PEMBUKA */
+.blok-pembuka {
+    padding: 16px;
+    text-align: center;
+}
+
+.mari-berpetualang {
+    margin: 0 0 10px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fde047;
+    line-height: 1.4;
+}
+
+.mari-berpetualang::first-letter {
+    font-size: 28px;
+    color: #facc15;
+}
+
+.blok-pembuka .separator img {
+    display: block;
+    width: 100%;
+    max-width: 290px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: var(--radius-dalam);
+}
+
+/* TEKS PERINTAH / AJAKAN */
+.teks-pengantar {
+    margin: 0;
+    padding: 14px 18px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+    background: var(--panel-bg);
+    color: var(--panel-teks);
+}
+
+/* WIDGET ORBIT TATA SURYA */
+.ts-widget {
+    background: #071329;
+    color: #ffffff;
+}
+
+.ts-widget .ts-viewport {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #536b91 #101d35;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ts-widget .ts-scene {
+    position: relative;
+    width: 760px;
+    height: 330px;
+    overflow: hidden;
+    background-color: #071329;
+    background-image:
+        radial-gradient(circle, #ffffff 1px, transparent 1.5px),
+        radial-gradient(circle, #8db6ff 1px, transparent 1.5px);
+    background-size: 73px 67px, 113px 97px;
+    background-position: 12px 9px, 35px 42px;
+}
+
+.ts-widget .ts-orbits {
+    position: absolute;
+    inset: 0;
+    width: 760px;
+    height: 330px;
+    pointer-events: none;
+}
+
+.ts-widget .ts-orbits ellipse {
+    fill: none;
+    stroke: #7188ad;
+    stroke-opacity: 0.75;
+    stroke-width: 1;
+}
+
+.ts-widget .ts-sun {
+    position: absolute;
+    left: 55px;
+    top: 165px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transform: translate(-50%, -50%);
+    color: #ffe082;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.ts-widget .ts-sun-ball {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fffbd0, #ffca28 50%, #ff6d00);
+    box-shadow: 0 0 16px rgba(255, 174, 37, 0.5);
+}
+
+.ts-widget .ts-planet {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.ts-widget .ts-ball {
+    display: block;
+    flex-shrink: 0;
+    border-radius: 50%;
+    box-shadow: inset -4px -4px 6px rgba(0, 0, 0, 0.53);
+}
+
+.ts-widget .ts-mercury {
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle at 30% 30%, #dddddd, #777777);
+}
+
+.ts-widget .ts-venus {
+    width: 11px;
+    height: 11px;
+    background: radial-gradient(circle at 30% 30%, #ffe6a5, #b76c2b);
+}
+
+.ts-widget .ts-earth {
+    width: 13px;
+    height: 13px;
+    background: radial-gradient(circle at 30% 30%, #77e4b1, #1875db 60%, #092d70);
+}
+
+.ts-widget .ts-mars {
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle at 30% 30%, #ffb18a, #bd3824);
+}
+
+.ts-widget .ts-jupiter {
+    width: 21px;
+    height: 21px;
+    background: repeating-linear-gradient(0deg, #bd8a69 0 4px, #f0d6b3 4px 8px);
+}
+
+.ts-widget .ts-saturn {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    background: repeating-linear-gradient(0deg, #e5d0a0 0 4px, #b69766 4px 7px);
+}
+
+.ts-widget .ts-saturn::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 10px;
+    left: -6px;
+    top: 4px;
+    border: 2px solid #d9c18c;
+    border-radius: 50%;
+    transform: rotate(-20deg);
+}
+
+.ts-widget .ts-uranus {
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle at 30% 30%, #d8ffff, #57bfce);
+}
+
+.ts-widget .ts-neptune {
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle at 30% 30%, #91b6ff, #1741b6);
+}
+
+/* BLOK NARASI & SUBJUDUL */
+.blok-narasi {
+    padding: 16px;
+    background: var(--panel-bg);
+    border-color: var(--panel-border);
+    color: var(--panel-teks);
+}
+
+.blok-narasi p {
+    margin: 0 0 10px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.blok-narasi p:last-child {
+    margin-bottom: 0;
+}
+
+.subjudul-materi {
+    padding: 12px 18px;
+    background: var(--panel-bg);
+    border-color: var(--panel-border);
+}
+
+.subjudul-materi h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #fde047;
+}
+
+/* PENGELOMPOKAN PLANET DALAM & LUAR */
+.blok-pengelompokan {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.blok-pengelompokan h3 {
+    margin: 0;
+    font-size: 17px;
+    color: #93c5fd;
+}
+
+.blok-pengelompokan > p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.grid-kelompok {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.kartu-kelompok {
+    background: var(--kotak-teks-bg);
+    color: var(--teks-kotak);
+    border: 1.5px solid var(--garis-kotak);
+    border-radius: var(--radius-dalam);
+    padding: 14px 16px;
+}
+
+.kartu-kelompok h4 {
+    margin: 0 0 6px;
+    font-size: 15.5px;
+    color: #0f172a;
+}
+
+.kartu-kelompok p {
+    margin: 0 0 8px;
+    font-size: 13.5px;
+    line-height: 1.5;
+}
+
+.kartu-kelompok ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 13.5px;
+    line-height: 1.5;
+}
+
+.kartu-kelompok li {
+    margin-bottom: 4px;
+}
+
+/* GAMBAR MATERI */
+.gambar-materi {
+    padding: 14px;
+    text-align: center;
+}
+
+.gambar-materi img {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: var(--radius-dalam);
+}
+
+/* PEMBATAS ANIMASI */
+.pembatas-semut {
+    position: relative;
+    width: 100%;
+    height: 36px;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.garis-pembatas {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    border-top: 2px dashed #93c5fd;
+    opacity: 0.7;
+}
+
+.semut {
+    position: absolute;
+    top: 50%;
+    left: -25px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    animation: semutJalan 8s linear infinite;
+}
+
+.semut-dua {
+    animation-delay: -4s;
+}
+
+/* KARTU TIAP PLANET */
+.kartu-planet {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.judul-planet {
+    margin: 0;
+    font-size: 18px;
+    color: #fde047;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.label-planet {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid rgba(125, 211, 252, 0.5);
+    color: #bae6fd;
+}
+
+.gambar-planet {
+    text-align: center;
+}
+
+.gambar-planet img {
+    display: block;
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: var(--radius-dalam);
+}
+
+/* DIALOG KARAKTER */
+.dialog-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 4px 0;
+    background: transparent;
+}
+
+.dialog-box.kanan {
+    flex-direction: row-reverse;
+}
+
+.karakter-wrap {
+    flex: 0 0 112px;
+    width: 112px;
+    height: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: mengambangKarakter 3.2s ease-in-out infinite;
+}
+
+.karakter-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+}
+
+.balon-teks {
+    position: relative;
+    flex: 1;
+    background: var(--kotak-teks-bg);
+    color: var(--teks-kotak);
+    border: 1.5px solid var(--garis-kotak);
+    border-radius: var(--radius-dalam);
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.55;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+.dialog-box.kiri .balon-teks::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 22px;
+    width: 11px;
+    height: 11px;
+    background: var(--kotak-teks-bg);
+    border-left: 1.5px solid var(--garis-kotak);
+    border-bottom: 1.5px solid var(--garis-kotak);
+    transform: rotate(45deg);
+}
+
+.dialog-box.kanan .balon-teks::before {
+    content: "";
+    position: absolute;
+    right: -7px;
+    top: 22px;
+    width: 11px;
+    height: 11px;
+    background: var(--kotak-teks-bg);
+    border-right: 1.5px solid var(--garis-kotak);
+    border-top: 1.5px solid var(--garis-kotak);
+    transform: rotate(45deg);
+}
+
+/* RINGKASAN TABEL */
+.blok-ringkasan {
+    padding: 16px;
+}
+
+.blok-ringkasan h3 {
+    margin: 0 0 12px;
+    font-size: 17px;
+    color: #fde047;
+}
+
+.tabel-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabel-planet {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--kotak-teks-bg);
+    color: var(--teks-kotak);
+    border-radius: var(--radius-dalam);
+    overflow: hidden;
+    font-size: 13px;
+}
+
+.tabel-planet th,
+.tabel-planet td {
+    padding: 10px 12px;
+    border: 1px solid #93c5fd;
+    text-align: left;
+    line-height: 1.45;
+}
+
+.tabel-planet th {
+    background: #1e2952;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* RESPONSIF HP */
+@media (max-width: 520px) {
+    .karakter-wrap {
+        flex: 0 0 88px;
+        width: 88px;
+        height: 96px;
+    }
+
+    .balon-teks {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .judul-planet {
+        font-size: 16px;
+    }
+}
