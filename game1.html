@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Game Cari Kata: Tata Surya</title>
     <style>
+        :root {
+            --bg-utama: #080d1a;
+            --bg-tengah: #0e172a;
+            --bg-bawah: #142038;
+            --bg-panel: #182744;
+            --bg-daftar: #121f38;
+            --border-panel: #334e7a;
+            --warna-judul: #f6c968;
+            --warna-kotak: #f4f7fb;
+            --warna-teks-kotak: #10203a;
+            --warna-pilih: #f6c968;
+            --warna-ketemu: #2ec4b6;
+            --lebar-maksimal: 520px;
+            --jarak-kotak: 3px;
+        }
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -16,26 +32,42 @@
             margin: 0;
             padding: 0;
             min-height: 100%;
-            background: #0b0c2a;
+            background-color: var(--bg-utama);
         }
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            color: white;
+            color: #f4f7fb;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100dvh;
             padding: 6px;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(1px 1px at 14% 16%, rgba(255, 255, 255, 0.65), transparent),
+                radial-gradient(1.5px 1.5px at 32% 28%, rgba(255, 255, 255, 0.45), transparent),
+                radial-gradient(1px 1px at 54% 12%, rgba(255, 255, 255, 0.7), transparent),
+                radial-gradient(1.5px 1.5px at 76% 22%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(1px 1px at 89% 38%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1px 1px at 18% 68%, rgba(255, 255, 255, 0.45), transparent),
+                radial-gradient(1.5px 1.5px at 42% 82%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(1px 1px at 68% 76%, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(1.5px 1.5px at 85% 86%, rgba(255, 255, 255, 0.55), transparent),
+                radial-gradient(ellipse at 50% 0%, rgba(56, 103, 178, 0.16), transparent 65%),
+                linear-gradient(180deg, var(--bg-utama) 0%, var(--bg-tengah) 55%, var(--bg-bawah) 100%);
+            background-attachment: fixed;
         }
 
         .game-wrapper {
             width: 100%;
-            max-width: 520px;
+            max-width: var(--lebar-maksimal);
             display: flex;
             flex-direction: column;
             gap: 6px;
+            position: relative;
+            z-index: 1;
         }
 
         .header-bar {
@@ -43,10 +75,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #1d3557;
+            background: var(--bg-panel);
             padding: 7px 10px;
             border-radius: 10px;
-            border: 2px solid #457b9d;
+            border: 1.5px solid var(--border-panel);
         }
 
         .title-group {
@@ -56,15 +88,15 @@
         }
 
         h1 {
-            color: #ffd166;
+            color: var(--warna-judul);
             margin: 0;
             font-size: 16px;
             font-weight: 800;
         }
 
         .badge-score {
-            background: #06d6a0;
-            color: #0b0c2a;
+            background: var(--warna-ketemu);
+            color: var(--bg-utama);
             font-size: 12px;
             font-weight: 900;
             padding: 2px 9px;
@@ -88,13 +120,13 @@
         }
 
         button.sound-btn {
-            background: #3a86ff;
-            box-shadow: 0 2px 0 #1d4ed8;
+            background: #2b6cb0;
+            box-shadow: 0 2px 0 #1a4373;
         }
 
         button.reset-btn {
-            background: #ef476f;
-            box-shadow: 0 2px 0 #b5173c;
+            background: #c53030;
+            box-shadow: 0 2px 0 #822727;
         }
 
         button.icon-btn:active {
@@ -104,10 +136,10 @@
 
         .word-list-box {
             width: 100%;
-            background: #162642;
+            background: var(--bg-daftar);
             padding: 6px;
             border-radius: 10px;
-            border: 2px solid #457b9d;
+            border: 1.5px solid var(--border-panel);
         }
 
         ul {
@@ -123,9 +155,9 @@
             font-size: 11px;
             padding: 5px 2px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
             text-align: center;
-            font-weight: 800;
+            font-weight: 700;
             letter-spacing: 0.2px;
             transition: all 0.2s;
             white-space: nowrap;
@@ -135,29 +167,28 @@
 
         li.found {
             text-decoration: line-through;
-            background: #06d6a0;
-            color: #0b0c2a;
+            background: var(--warna-ketemu);
+            color: var(--bg-utama);
         }
 
-        /* Papan Persegi Penuh Lebar Layar HP */
         .grid {
             width: 100%;
             aspect-ratio: 1 / 1;
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             grid-template-rows: repeat(10, 1fr);
-            gap: 3px;
-            background: #1d3557;
+            gap: var(--jarak-kotak);
+            background: var(--bg-panel);
             padding: 6px;
             border-radius: 12px;
-            border: 3px solid #457b9d;
+            border: 2px solid var(--border-panel);
             touch-action: none;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
         }
 
         .cell {
-            background: #f1faee;
-            color: #1d3557;
+            background: var(--warna-kotak);
+            color: var(--warna-teks-kotak);
             font-size: clamp(19px, 5.5vw, 28px);
             font-weight: 900;
             display: flex;
@@ -166,20 +197,20 @@
             border-radius: 6px;
             pointer-events: none;
             line-height: 1;
-            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.14);
             transition: background-color 0.1s, transform 0.1s;
         }
 
         .cell.selected {
-            background: #ffd166;
-            color: #0b0c2a;
+            background: var(--warna-pilih);
+            color: var(--bg-utama);
             transform: scale(1.06);
             z-index: 2;
         }
 
         .cell.found {
-            background: #06d6a0;
-            color: #0b0c2a;
+            background: var(--warna-ketemu);
+            color: var(--bg-utama);
             animation: pop 0.25s ease;
         }
 
@@ -192,7 +223,7 @@
         .win-banner {
             position: fixed;
             inset: 0;
-            background: rgba(11, 12, 42, 0.88);
+            background: rgba(8, 13, 26, 0.86);
             display: none;
             flex-direction: column;
             align-items: center;
@@ -208,23 +239,23 @@
         }
 
         .win-card {
-            background: #1d3557;
-            border: 3px solid #ffd166;
-            border-radius: 20px;
+            background: var(--bg-panel);
+            border: 2px solid var(--warna-judul);
+            border-radius: 18px;
             padding: 24px 28px;
             max-width: 320px;
             width: 100%;
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
         }
 
         .win-card h2 {
-            color: #ffd166;
+            color: var(--warna-judul);
             margin: 0 0 8px 0;
             font-size: 24px;
         }
 
         .win-card p {
-            color: #f1faee;
+            color: var(--warna-kotak);
             margin: 0 0 18px 0;
             font-size: 14px;
         }
@@ -234,12 +265,12 @@
             padding: 12px;
             font-size: 16px;
             font-weight: bold;
-            background: #06d6a0;
-            color: #0b0c2a;
+            background: var(--warna-ketemu);
+            color: var(--bg-utama);
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            box-shadow: 0 4px 0 #049a73;
+            box-shadow: 0 4px 0 #1f8a80;
         }
 
         @keyframes fadeIn {
