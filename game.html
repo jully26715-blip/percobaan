@@ -2,82 +2,85 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Game Cari Kata: Tata Surya</title>
     <style>
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* Hilangkan kedipan biru saat disentuh di HP */
         }
 
         body {
-            font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #0b0c2a, #1b2845);
             color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 15px 10px;
             user-select: none;
+            overflow-x: hidden;
         }
 
         h1 {
             color: #ffd166;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin: 0 0 5px 0;
+            margin: 5px 0;
             text-align: center;
-            font-size: 28px;
+            font-size: 22px;
         }
 
         p {
             margin: 0 0 10px 0;
             color: #a8dadc;
             text-align: center;
-            font-size: 15px;
+            font-size: 13px;
         }
 
         #message {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #06d6a0;
-            height: 25px;
-            margin-bottom: 10px;
+            min-height: 24px;
+            margin-bottom: 8px;
             text-align: center;
         }
 
-        /* Kontainer Utama */
+        /* Kontainer Utama Responsif */
         .game-container {
             display: flex;
             flex-direction: row;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
-            align-items: stretch; /* Membuat tinggi kotak kanan dan kiri sama rata */
+            align-items: stretch;
             background: rgba(255, 255, 255, 0.08);
-            padding: 20px;
-            border-radius: 20px;
+            padding: 15px;
+            border-radius: 18px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            max-width: 820px;
             width: 100%;
+            max-width: 800px;
         }
 
-        /* Papan Kotak Huruf */
+        /* Papan Kotak Huruf - Ukuran otomatis mengikuti layar */
         .grid {
             display: grid;
-            grid-template-columns: repeat(10, 38px);
-            grid-template-rows: repeat(10, 38px);
-            gap: 5px;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 4px;
             background: #1d3557;
-            padding: 12px;
-            border-radius: 15px;
+            padding: 10px;
+            border-radius: 14px;
             border: 3px solid #457b9d;
-            flex-shrink: 0; /* Mencegah papan mengecil/gepeng */
+            width: 420px;
+            height: 420px;
+            flex-shrink: 0;
+            touch-action: none; /* WAJIB: Mencegah layar HP ikut ter-scroll saat jari menggeser */
         }
 
         .cell {
-            width: 38px;
-            height: 38px;
             background: #f1faee;
             color: #1d3557;
             font-size: 18px;
@@ -85,19 +88,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-        }
-
-        .cell:hover {
-            transform: scale(1.05);
+            transition: background-color 0.15s, transform 0.1s;
         }
 
         .cell.selected {
             background: #ffd166;
             color: #000;
             transform: scale(1.08);
+            z-index: 2;
         }
 
         .cell.found {
@@ -115,39 +115,37 @@
         /* Daftar Kata yang Dicari */
         .word-list-box {
             background: #1d3557;
-            padding: 20px;
-            border-radius: 15px;
+            padding: 15px;
+            border-radius: 14px;
             border: 3px solid #457b9d;
-            flex: 1; /* Mengisi sisa ruang secara proporsional */
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-width: 240px;
         }
 
         .word-list-box h2 {
-            margin: 0 0 15px 0;
+            margin: 0 0 12px 0;
             color: #ffd166;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
             border-bottom: 2px dashed #457b9d;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
-        /* Daftar kata dibuat 2 kolom agar ringkas dan proporsional */
         ul {
             list-style: none;
             padding: 0;
             margin: 0;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 8px;
         }
 
         li {
-            font-size: 14px;
-            padding: 10px 8px;
-            border-radius: 8px;
+            font-size: 13px;
+            padding: 8px 4px;
+            border-radius: 6px;
             background: rgba(255, 255, 255, 0.1);
             text-align: center;
             font-weight: bold;
@@ -162,45 +160,63 @@
         }
 
         button {
-            margin-top: 20px;
+            margin-top: 15px;
             width: 100%;
             padding: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             font-family: inherit;
             background: #ef476f;
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             box-shadow: 0 4px 0 #b5173c;
-            transition: transform 0.1s;
         }
 
         button:active {
-            transform: translateY(4px);
+            transform: translateY(3px);
             box-shadow: none;
         }
 
-        /* Penyesuaian khusus untuk layar HP/kecil */
+        /* Tampilan Khusus HP (Layar Tegak / Portrait) */
         @media (max-width: 720px) {
             .game-container {
                 flex-direction: column;
                 align-items: center;
-                max-width: 460px;
+                padding: 12px;
+                gap: 12px;
             }
+
+            /* Papan otomatis mengecil pas sesuai lebar layar HP */
             .grid {
-                grid-template-columns: repeat(10, 32px);
-                grid-template-rows: repeat(10, 32px);
-                gap: 4px;
+                width: calc(100vw - 44px);
+                height: calc(100vw - 44px);
+                max-width: 380px;
+                max-height: 380px;
+                gap: 3px;
+                padding: 8px;
             }
+
             .cell {
-                width: 32px;
-                height: 32px;
                 font-size: 16px;
+                border-radius: 5px;
             }
+
             .word-list-box {
                 width: 100%;
+                max-width: 380px;
+                padding: 12px;
+            }
+
+            ul {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+
+            li {
+                font-size: 12px;
+                padding: 7px 4px;
             }
         }
     </style>
@@ -208,7 +224,7 @@
 <body>
 
     <h1>🚀 Petualangan Tata Surya 🌟</h1>
-    <p>Klik dan geser huruf untuk menemukan nama planet & benda langit!</p>
+    <p>Sentuh dan geser jarimu untuk menemukan nama planet!</p>
 
     <div id="message"></div>
 
@@ -249,7 +265,6 @@
             foundWords = [];
             messageElement.textContent = '';
             
-            // Pilih 8 kata acak agar pas mengisi 2 kolom x 4 baris
             targetWords = [...allWords].sort(() => 0.5 - Math.random()).slice(0, 8);
             
             placeWords();
@@ -322,14 +337,40 @@
                     cell.dataset.row = r;
                     cell.dataset.col = c;
 
+                    // Dukungan Mouse (Laptop/PC)
                     cell.addEventListener('mousedown', () => startSelection(r, c));
                     cell.addEventListener('mouseenter', () => updateSelection(r, c));
+
+                    // Dukungan Sentuhan Jari (HP/Tablet)
+                    cell.addEventListener('touchstart', (e) => {
+                        e.preventDefault(); // Mencegah klik ganda / zoom
+                        startSelection(r, c);
+                    }, { passive: false });
                     
                     gridElement.appendChild(cell);
                 }
             }
-            window.addEventListener('mouseup', endSelection);
         }
+
+        // Mendeteksi pergerakan jari di atas papan HP
+        gridElement.addEventListener('touchmove', (e) => {
+            if (!isSelecting) return;
+            e.preventDefault(); // Kunci layar agar tidak ikut scroll
+
+            const touch = e.touches[0];
+            // Cari elemen kotak huruf tepat di bawah posisi ujung jari saat ini
+            const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            if (targetEl && targetEl.classList.contains('cell')) {
+                const r = parseInt(targetEl.dataset.row);
+                const c = parseInt(targetEl.dataset.col);
+                updateSelection(r, c);
+            }
+        }, { passive: false });
+
+        // Akhiri seleksi saat jari diangkat atau klik mouse dilepas
+        window.addEventListener('mouseup', endSelection);
+        window.addEventListener('touchend', endSelection);
 
         function renderWordList() {
             wordListElement.innerHTML = '';
@@ -397,7 +438,7 @@
                 document.getElementById(`word-${matchedWord}`).classList.add('found');
 
                 if (foundWords.length === targetWords.length) {
-                    messageElement.textContent = "🎉 Hebat! Kamu menemukan semua kata! 🎉";
+                    messageElement.textContent = "🎉 Hebat! Semua kata ketemu! 🎉";
                 }
             } else {
                 document.querySelectorAll('.cell.selected').forEach(el => el.classList.remove('selected'));
