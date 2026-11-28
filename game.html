@@ -13,43 +13,42 @@
         }
 
         html, body {
-            height: 100%;
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100dvh;
             overflow: hidden;
+            background: #0b0c2a;
         }
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: radial-gradient(circle at top, #1b2845, #0b0c2a);
             color: white;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100dvh;
-            padding: 10px;
         }
 
-        /* Kontainer Utama: Menyatukan lebar atas & bawah agar sama persis */
+        /* Wadah Full Layar Penuh (Lebar 100% & Tinggi 100%) */
         .game-wrapper {
-            width: min(calc(100vw - 20px), calc(100dvh - 135px));
-            max-width: 560px;
+            width: 100%;
+            height: 100dvh;
+            max-width: 600px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            background: #131c36;
         }
 
-        /* Header Bar */
+        /* Header Bar Full Lebar */
         .header-bar {
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(255, 255, 255, 0.08);
-            padding: 7px 12px;
-            border-radius: 12px;
-            border: 1.5px solid rgba(255, 255, 255, 0.14);
+            background: #1d3557;
+            padding: 8px 12px;
+            border-bottom: 2px solid #457b9d;
+            flex-shrink: 0;
         }
 
         .title-group {
@@ -61,16 +60,16 @@
         h1 {
             color: #ffd166;
             margin: 0;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 800;
         }
 
         .badge-score {
             background: #06d6a0;
             color: #0b0c2a;
-            font-size: 12px;
-            font-weight: 800;
-            padding: 2px 8px;
+            font-size: 13px;
+            font-weight: 900;
+            padding: 3px 10px;
             border-radius: 20px;
         }
 
@@ -80,17 +79,14 @@
         }
 
         button.icon-btn {
-            padding: 5px 10px;
-            font-size: 12px;
+            padding: 6px 11px;
+            font-size: 13px;
             font-weight: bold;
             font-family: inherit;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
         button.sound-btn {
@@ -108,13 +104,13 @@
             box-shadow: none;
         }
 
-        /* Daftar Kata 4 Kolom */
+        /* Daftar Kata 4 Kolom Full Lebar */
         .word-list-box {
             width: 100%;
-            background: rgba(29, 53, 87, 0.9);
-            padding: 7px;
-            border-radius: 12px;
-            border: 2px solid #457b9d;
+            background: #162642;
+            padding: 8px;
+            border-bottom: 2px solid #457b9d;
+            flex-shrink: 0;
         }
 
         ul {
@@ -127,12 +123,12 @@
         }
 
         li {
-            font-size: 11px;
-            padding: 6px 2px;
+            font-size: 12px;
+            padding: 7px 3px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.14);
             text-align: center;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: 0.3px;
             transition: all 0.2s;
             white-space: nowrap;
@@ -146,41 +142,41 @@
             color: #0b0c2a;
         }
 
-        /* Papan Kotak Huruf - Lebar 100% mengikuti kontainer atas & rasio persegi 1:1 */
+        /* Papan Kotak Huruf: Mengisi 100% sisa tinggi dan 100% lebar layar HP */
         .grid {
+            flex: 1;
             width: 100%;
-            aspect-ratio: 1 / 1;
+            min-height: 0;
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             grid-template-rows: repeat(10, 1fr);
             gap: 4px;
             background: #1d3557;
-            padding: 8px;
-            border-radius: 14px;
-            border: 3px solid #457b9d;
+            padding: 6px;
             touch-action: none;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
         }
 
         .cell {
+            width: 100%;
+            height: 100%;
             background: #f1faee;
             color: #1d3557;
-            font-size: clamp(16px, 4.8vw, 26px);
+            font-size: clamp(22px, 6.2vw, 32px);
             font-weight: 900;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 7px;
+            border-radius: 6px;
             pointer-events: none;
             line-height: 1;
-            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
             transition: background-color 0.1s, transform 0.1s;
         }
 
         .cell.selected {
             background: #ffd166;
             color: #0b0c2a;
-            transform: scale(1.07);
+            transform: scale(1.05);
             z-index: 2;
         }
 
@@ -192,7 +188,7 @@
 
         @keyframes pop {
             0% { transform: scale(1); }
-            50% { transform: scale(1.14); }
+            50% { transform: scale(1.12); }
             100% { transform: scale(1); }
         }
 
@@ -200,7 +196,7 @@
         .win-banner {
             position: fixed;
             inset: 0;
-            background: rgba(11, 12, 42, 0.85);
+            background: rgba(11, 12, 42, 0.88);
             display: none;
             flex-direction: column;
             align-items: center;
