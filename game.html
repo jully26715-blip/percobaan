@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Cari Kata: Tata Surya</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0b0c2a, #1b2845);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            user-select: none;
+        }
+
+        h1 {
+            color: #ffd166;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin: 0 0 5px 0;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        p {
+            margin: 0 0 10px 0;
+            color: #a8dadc;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        #message {
+            font-size: 18px;
+            font-weight: bold;
+            color: #06d6a0;
+            height: 25px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Kontainer Utama */
+        .game-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: center;
+            align-items: stretch; /* Membuat tinggi kotak kanan dan kiri sama rata */
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 820px;
+            width: 100%;
+        }
+
+        /* Papan Kotak Huruf */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 38px);
+            grid-template-rows: repeat(10, 38px);
+            gap: 5px;
+            background: #1d3557;
+            padding: 12px;
+            border-radius: 15px;
+            border: 3px solid #457b9d;
+            flex-shrink: 0; /* Mencegah papan mengecil/gepeng */
+        }
+
+        .cell {
+            width: 38px;
+            height: 38px;
+            background: #f1faee;
+            color: #1d3557;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .cell:hover {
+            transform: scale(1.05);
+        }
+
+        .cell.selected {
+            background: #ffd166;
+            color: #000;
+            transform: scale(1.08);
+        }
+
+        .cell.found {
+            background: #06d6a0;
+            color: white;
+            animation: pop 0.3s ease;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* Daftar Kata yang Dicari */
+        .word-list-box {
+            background: #1d3557;
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid #457b9d;
+            flex: 1; /* Mengisi sisa ruang secara proporsional */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-width: 240px;
+        }
+
+        .word-list-box h2 {
+            margin: 0 0 15px 0;
+            color: #ffd166;
+            font-size: 18px;
+            text-align: center;
+            border-bottom: 2px dashed #457b9d;
+            padding-bottom: 10px;
+        }
+
+        /* Daftar kata dibuat 2 kolom agar ringkas dan proporsional */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        li {
+            font-size: 14px;
+            padding: 10px 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+
+        li.found {
+            text-decoration: line-through;
+            background: #06d6a0;
+            color: #0b0c2a;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: inherit;
+            background: #ef476f;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #b5173c;
+            transition: transform 0.1s;
+        }
+
+        button:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Penyesuaian khusus untuk layar HP/kecil */
+        @media (max-width: 720px) {
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+                max-width: 460px;
+            }
+            .grid {
+                grid-template-columns: repeat(10, 32px);
+                grid-template-rows: repeat(10, 32px);
+                gap: 4px;
+            }
+            .cell {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+            .word-list-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 Petualangan Tata Surya 🌟</h1>
+    <p>Klik dan geser huruf untuk menemukan nama planet & benda langit!</p>
+
+    <div id="message"></div>
+
+    <div class="game-container">
+        <div class="grid" id="grid"></div>
+
+        <div class="word-list-box">
+            <div>
+                <h2>Daftar Kata</h2>
+                <ul id="word-list"></ul>
+            </div>
+            <button onclick="initGame()">Main Lagi 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        const allWords = [
+            "MERKURIUS", "VENUS", "BUMI", "MARS", 
+            "JUPITER", "SATURNUS", "URANUS", "NEPTUNUS", 
+            "MATAHARI", "BULAN", "BINTANG", "KOMET", "ASTEROID", "ORBIT"
+        ];
+        
+        const gridSize = 10;
+        let grid = [];
+        let targetWords = [];
+        let foundWords = [];
+        
+        let isSelecting = false;
+        let selectedCells = [];
+        let startCell = null;
+
+        const gridElement = document.getElementById('grid');
+        const wordListElement = document.getElementById('word-list');
+        const messageElement = document.getElementById('message');
+
+        function initGame() {
+            grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
+            foundWords = [];
+            messageElement.textContent = '';
+            
+            // Pilih 8 kata acak agar pas mengisi 2 kolom x 4 baris
+            targetWords = [...allWords].sort(() => 0.5 - Math.random()).slice(0, 8);
+            
+            placeWords();
+            fillEmptyCells();
+            renderGrid();
+            renderWordList();
+        }
+
+        function placeWords() {
+            const directions = [
+                [0, 1],   // Kanan
+                [1, 0],   // Bawah
+                [1, 1],   // Diagonal kanan bawah
+                [-1, 1]   // Diagonal kanan atas
+            ];
+
+            for (let word of targetWords) {
+                let placed = false;
+                let attempts = 0;
+
+                while (!placed && attempts < 100) {
+                    attempts++;
+                    const dir = directions[Math.floor(Math.random() * directions.length)];
+                    const row = Math.floor(Math.random() * gridSize);
+                    const col = Math.floor(Math.random() * gridSize);
+
+                    if (canPlaceWord(word, row, col, dir)) {
+                        for (let i = 0; i < word.length; i++) {
+                            grid[row + i * dir[0]][col + i * dir[1]] = word[i];
+                        }
+                        placed = true;
+                    }
+                }
+            }
+        }
+
+        function canPlaceWord(word, row, col, dir) {
+            for (let i = 0; i < word.length; i++) {
+                const newRow = row + i * dir[0];
+                const newCol = col + i * dir[1];
+
+                if (newRow < 0 || newRow >= gridSize || newCol < 0 || newCol >= gridSize) {
+                    return false;
+                }
+                if (grid[newRow][newCol] !== '' && grid[newRow][newCol] !== word[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function fillEmptyCells() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    if (grid[r][c] === '') {
+                        grid[r][c] = letters[Math.floor(Math.random() * letters.length)];
+                    }
+                }
+            }
+        }
+
+        function renderGrid() {
+            gridElement.innerHTML = '';
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.textContent = grid[r][c];
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+
+                    cell.addEventListener('mousedown', () => startSelection(r, c));
+                    cell.addEventListener('mouseenter', () => updateSelection(r, c));
+                    
+                    gridElement.appendChild(cell);
+                }
+            }
+            window.addEventListener('mouseup', endSelection);
+        }
+
+        function renderWordList() {
+            wordListElement.innerHTML = '';
+            for (let word of targetWords) {
+                const li = document.createElement('li');
+                li.textContent = word;
+                li.id = `word-${word}`;
+                wordListElement.appendChild(li);
+            }
+        }
+
+        function startSelection(r, c) {
+            isSelecting = true;
+            startCell = { r, c };
+            updateSelection(r, c);
+        }
+
+        function updateSelection(endR, endC) {
+            if (!isSelecting) return;
+
+            document.querySelectorAll('.cell.selected').forEach(el => el.classList.remove('selected'));
+            selectedCells = [];
+
+            const dR = endR - startCell.r;
+            const dC = endC - startCell.c;
+
+            if (dR === 0 || dC === 0 || Math.abs(dR) === Math.abs(dC)) {
+                const steps = Math.max(Math.abs(dR), Math.abs(dC));
+                const stepR = dR === 0 ? 0 : dR / steps;
+                const stepC = dC === 0 ? 0 : dC / steps;
+
+                for (let i = 0; i <= steps; i++) {
+                    const currR = startCell.r + i * stepR;
+                    const currC = startCell.c + i * stepC;
+                    const cellEl = document.querySelector(`.cell[data-row='${currR}'][data-col='${currC}']`);
+                    
+                    if (cellEl) {
+                        cellEl.classList.add('selected');
+                        selectedCells.push({ r: currR, c: currC, el: cellEl, letter: grid[currR][currC] });
+                    }
+                }
+            }
+        }
+
+        function endSelection() {
+            if (!isSelecting) return;
+            isSelecting = false;
+
+            const formedWord = selectedCells.map(c => c.letter).join('');
+            const reversedWord = formedWord.split('').reverse().join('');
+
+            let matchedWord = null;
+            if (targetWords.includes(formedWord) && !foundWords.includes(formedWord)) {
+                matchedWord = formedWord;
+            } else if (targetWords.includes(reversedWord) && !foundWords.includes(reversedWord)) {
+                matchedWord = reversedWord;
+            }
+
+            if (matchedWord) {
+                foundWords.push(matchedWord);
+                selectedCells.forEach(c => {
+                    c.el.classList.remove('selected');
+                    c.el.classList.add('found');
+                });
+                document.getElementById(`word-${matchedWord}`).classList.add('found');
+
+                if (foundWords.length === targetWords.length) {
+                    messageElement.textContent = "🎉 Hebat! Kamu menemukan semua kata! 🎉";
+                }
+            } else {
+                document.querySelectorAll('.cell.selected').forEach(el => el.classList.remove('selected'));
+            }
+            selectedCells = [];
+        }
+
+        initGame();
+    </script>
+</body>
+</html>
