@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ujian Semester Genap (15 Soal)</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 28px 16px;
+      background: #f1f5f9;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: #0f172a;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 22px 24px;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    h1 { margin: 0 0 6px; font-size: 1.4rem; }
+    .muted { margin: 0; color: #64748b; font-size: 0.9rem; }
+
+    .nama-box {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-width: 340px;
+    }
+
+    label { font-size: 0.85rem; font-weight: 600; }
+
+    input[type="text"] {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.92rem;
+      font-family: inherit;
+    }
+
+    .question-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+      background: #f8fafc;
+    }
+
+    .question-meta {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #0d9488;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .question-text { font-weight: 600; margin-bottom: 10px; }
+
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    button {
+      padding: 12px 20px;
+      border-radius: 8px;
+      background: #0d9488;
+      color: #fff;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover { background: #0f766e; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Ujian Semester Genap (15 Soal)</h1>
+      <p class="muted">Isi nama peserta dan jawab seluruh soal. Setelah dikirim, hasil ujian otomatis tampil di halaman grafik.</p>
+
+      <div class="nama-box">
+        <label for="namaPeserta">Nama Peserta</label>
+        <input id="namaPeserta" type="text" placeholder="Masukkan nama peserta" required />
+      </div>
+    </div>
+
+    <form id="examForm" class="card">
+      <div id="questionsContainer"></div>
+      <button type="submit">Kirim Jawaban</button>
+    </form>
+  </div>
+
+  <script>
+    const HALAMAN_GRAFIK = "grafik1.html";
+    const STORAGE_KEY = "rekap_nilai_ujian";
+
+    // 15 Soal Semester Genap (3 soal per mata pelajaran)
+    const soalGenap = [
+      { id: 1, mapel: "Matematika", tanya: "1. Jika 2x + 4 = 14, maka nilai x adalah...", pilihan: ["3", "4", "5", "6"], jawabanBenar: 2 },
+      { id: 2, mapel: "Matematika", tanya: "2. Luas persegi dengan panjang sisi 9 cm adalah...", pilihan: ["18 cm²", "36 cm²", "72 cm²", "81 cm²"], jawabanBenar: 3 },
+      { id: 3, mapel: "Matematika", tanya: "3. Keliling lingkaran berdiameter 14 cm (π = 22/7) adalah...", pilihan: ["22 cm", "44 cm", "88 cm", "154 cm"], jawabanBenar: 1 },
+
+      { id: 4, mapel: "B. Indonesia", tanya: "4. Teks yang berisi langkah-langkah melakukan suatu kegiatan disebut...", pilihan: ["Teks narasi", "Teks prosedur", "Teks deskripsi", "Teks berita"], jawabanBenar: 1 },
+      { id: 5, mapel: "B. Indonesia", tanya: "5. Kata baku yang tepat di bawah ini adalah...", pilihan: ["Apotik", "Ijin", "Aktifitas", "Apotek"], jawabanBenar: 3 },
+      { id: 6, mapel: "B. Indonesia", tanya: "6. Bagian akhir dari sebuah cerita yang berisi penyelesaian masalah disebut...", pilihan: ["Orientasi", "Komplikasi", "Resolusi", "Koda"], jawabanBenar: 2 },
+
+      { id: 7, mapel: "B. Inggris", tanya: "7. The opposite of 'expensive' is...", pilihan: ["Cheap", "Costly", "High", "Rich"], jawabanBenar: 0 },
+      { id: 8, mapel: "B. Inggris", tanya: "8. They ___ football in the yard right now.", pilihan: ["play", "plays", "are playing", "played"], jawabanBenar: 2 },
+      { id: 9, mapel: "B. Inggris", tanya: "9. 'Please close the window.' This sentence is an...", pilihan: ["Question", "Imperative", "Exclamation", "Adverb"], jawabanBenar: 1 },
+
+      { id: 10, mapel: "IPA / Fisika", tanya: "10. Perubahan wujud zat cair menjadi gas disebut...", pilihan: ["Mencair", "Membeku", "Menguap", "Mengembun"], jawabanBenar: 2 },
+      { id: 11, mapel: "IPA / Fisika", tanya: "11. Energi yang tersimpan pada benda yang berada pada ketinggian tertentu disebut...", pilihan: ["Energi kinetik", "Energi potensial", "Energi panas", "Energi bunyi"], jawabanBenar: 1 },
+      { id: 12, mapel: "IPA / Fisika", tanya: "12. Alat untuk mengukur kuat arus listrik adalah...", pilihan: ["Voltmeter", "Ohmmeter", "Amperemeter", "Barometer"], jawabanBenar: 2 },
+
+      { id: 13, mapel: "Informatika", tanya: "13. Bahasa yang digunakan untuk mengatur tampilan dan tata letak web adalah...", pilihan: ["HTML", "CSS", "SQL", "MP3"], jawabanBenar: 1 },
+      { id: 14, mapel: "Informatika", tanya: "14. Urutan langkah logis untuk menyelesaikan masalah disebut...", pilihan: ["Algoritma", "Browser", "Compiler", "Database"], jawabanBenar: 0 },
+      { id: 15, mapel: "Informatika", tanya: "15. Perintah untuk menyimpan file di sebagian besar aplikasi adalah...", pilihan: ["Ctrl + C", "Ctrl + V", "Ctrl + S", "Ctrl + Z"], jawabanBenar: 2 }
+    ];
+
+    const questionsContainer = document.getElementById("questionsContainer");
+    questionsContainer.innerHTML = soalGenap.map((q) => {
+      const optionsHtml = q.pilihan.map((opt, idx) => `
+        <label class="option-row">
+          <input type="radio" name="soal_${q.id}" value="${idx}" required />
+          <span>${opt}</span>
+        </label>
+      `).join("");
+
+      return `
+        <div class="question-item">
+          <div class="question-meta">${q.mapel} • Semester Genap</div>
+          <div class="question-text">${q.tanya}</div>
+          ${optionsHtml}
+        </div>
+      `;
+    }).join("");
+
+    document.getElementById("examForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nama = document.getElementById("namaPeserta").value.trim();
+      if (!nama) {
+        alert("Masukkan nama peserta terlebih dahulu.");
+        return;
+      }
+
+      const stats = {};
+      let totalBenar = 0;
+
+      soalGenap.forEach((q) => {
+        if (!stats[q.mapel]) stats[q.mapel] = { benar: 0, total: 0 };
+        stats[q.mapel].total++;
+
+        const checked = document.querySelector(`input[name="soal_${q.id}"]:checked`);
+        if (checked && Number(checked.value) === q.jawabanBenar) {
+          stats[q.mapel].benar++;
+          totalBenar++;
+        }
+      });
+
+      const nilaiPerMapel = {};
+      Object.entries(stats).forEach(([mapel, s]) => {
+        nilaiPerMapel[mapel] = Number(((s.benar / s.total) * 100).toFixed(1));
+      });
+
+      const nilaiAkhir = Number(((totalBenar / soalGenap.length) * 100).toFixed(1));
+
+      const rekap = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      const keyPeserta = nama.toLowerCase();
+      if (!rekap[keyPeserta]) {
+        rekap[keyPeserta] = { nama, ganjil: {}, genap: {} };
+      }
+      rekap[keyPeserta].nama = nama;
+      rekap[keyPeserta].genap = nilaiPerMapel;
+      rekap[keyPeserta].ringkasanGenap = { totalBenar, totalSoal: soalGenap.length, nilaiAkhir };
+      rekap.pesertaAktif = keyPeserta;
+      rekap.semesterTerakhir = "genap";
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rekap));
+      window.location.href = "grafik1.html";
+    });
+   </script>
+</body>
+</html>

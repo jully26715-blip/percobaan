@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hasil Ujian & Grafik Nilai (0–100)</title>
+  <style>
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-chart: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --ganjil-color: #2563eb;
+      --ganjil-soft: #eff6ff;
+      --genap-color: #0d9488;
+      --genap-soft: #f0fdfa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 28px 16px;
+      background: var(--bg-page);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      padding: 26px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    h1, h2 { margin: 0 0 6px; }
+    h1 { font-size: 1.45rem; }
+    h2 { font-size: 1.15rem; }
+    .muted { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+
+    .ringkasan-nilai {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin: 16px 0;
+      font-weight: 700;
+      font-size: 1.02rem;
+    }
+
+    .detail-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .detail-item {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .detail-mapel { font-size: 0.82rem; color: var(--text-muted); font-weight: 700; margin-bottom: 6px; }
+    .detail-scores { font-size: 0.88rem; font-weight: 700; line-height: 1.5; }
+    .skor-g { color: var(--ganjil-color); }
+    .skor-e { color: var(--genap-color); }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 12px 0 18px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .dot { width: 13px; height: 13px; border-radius: 50%; display: inline-block; }
+    .dot-ganjil { background: var(--ganjil-color); }
+    .dot-genap { background: var(--genap-color); }
+
+    .chart-box {
+      width: 100%;
+      height: 350px;
+      background: var(--bg-chart);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      position: relative;
+    }
+
+    .chart-box svg { width: 100%; height: 100%; overflow: visible; }
+    .grid-line { stroke: #e2e8f0; stroke-width: 1; stroke-dasharray: 4 4; }
+    .axis-line { stroke: #94a3b8; stroke-width: 1.5; }
+    .axis-label { font-size: 11px; fill: var(--text-muted); font-weight: 500; }
+    .x-label { font-size: 11.5px; fill: var(--text-main); font-weight: 600; text-anchor: middle; }
+    .val-ganjil { font-size: 10.5px; fill: var(--ganjil-color); font-weight: 700; text-anchor: middle; }
+    .val-genap { font-size: 10.5px; fill: var(--genap-color); font-weight: 700; text-anchor: middle; }
+
+    .empty-msg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .score-recap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .recap-item {
+      padding: 14px 16px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid transparent;
+    }
+
+    .recap-ganjil { background: var(--ganjil-soft); border-color: #bfdbfe; color: var(--ganjil-color); }
+    .recap-genap { background: var(--genap-soft); border-color: #99f6e4; color: var(--genap-color); }
+    .recap-selisih { background: #f8fafc; border-color: var(--border-color); color: var(--text-main); }
+    .recap-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.85; margin-bottom: 4px; font-weight: 700; }
+    .recap-value { font-size: 1.25rem; font-weight: 800; }
+
+    @media (max-width: 640px) {
+      .score-recap { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1 id="judulHasil">Hasil Ujian (0–100)</h1>
+      <p id="subjudulHasil" class="muted">Menunggu hasil ujian...</p>
+      <div id="ringkasanNilai" class="ringkasan-nilai" style="display: none;"></div>
+      <div id="detailMapel" class="detail-list"></div>
+    </div>
+
+    <div class="card">
+      <h2>Grafik Nilai Ujian Semester Ganjil & Genap (0–100)</h2>
+      <p class="muted">Perbandingan nilai ujian berdasarkan hasil yang masuk.</p>
+
+      <div class="legend">
+        <span class="legend-item"><span class="dot dot-ganjil"></span>Semester Ganjil</span>
+        <span class="legend-item"><span class="dot dot-genap"></span>Semester Genap</span>
+      </div>
+
+      <div class="chart-box">
+        <svg id="gradeChart" viewBox="0 0 760 310" aria-label="Grafik nilai ujian">
+          <g id="gridLayer"></g>
+          <g id="axesLayer"></g>
+          <g id="linesLayer"></g>
+          <g id="pointsLayer"></g>
+        </svg>
+        <div id="emptyState" class="empty-msg">Belum ada hasil ujian yang masuk.</div>
+      </div>
+
+      <div class="score-recap">
+        <div class="recap-item recap-ganjil">
+          <div class="recap-title">Rata-rata Ganjil</div>
+          <div class="recap-value" id="avgGanjil">-</div>
+        </div>
+        <div class="recap-item recap-genap">
+          <div class="recap-title">Rata-rata Genap</div>
+          <div class="recap-value" id="avgGenap">-</div>
+        </div>
+        <div class="recap-item recap-selisih">
+          <div class="recap-title">Selisih Rata-rata</div>
+          <div class="recap-value" id="diffAvg">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "rekap_nilai_ujian";
+    const svgConfig = { left: 55, right: 730, top: 25, bottom: 260 };
+    const gridLayer = document.getElementById("gridLayer");
+    const axesLayer = document.getElementById("axesLayer");
+    const linesLayer = document.getElementById("linesLayer");
+    const pointsLayer = document.getElementById("pointsLayer");
+    const emptyState = document.getElementById("emptyState");
+
+    function clampScore(score) {
+      if (score === null || score === undefined || score === "") return null;
+      const num = Number(score);
+      if (Number.isNaN(num)) return null;
+      return Math.max(0, Math.min(100, num));
+    }
+
+    function scoreToY(score) {
+      const clamped = clampScore(score) ?? 0;
+      return svgConfig.bottom - (clamped / 100) * (svgConfig.bottom - svgConfig.top);
+    }
+
+    function indexToX(index, total) {
+      const width = svgConfig.right - svgConfig.left;
+      if (total <= 1) return svgConfig.left + width / 2;
+      const paddingX = 40;
+      return svgConfig.left + paddingX + (index / (total - 1)) * (width - paddingX * 2);
+    }
+
+    function createSvgEl(tag, attrs = {}) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+      for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+      return el;
+    }
+
+    function renderGridAndAxes() {
+      gridLayer.innerHTML = "";
+      axesLayer.innerHTML = "";
+
+      for (let val = 0; val <= 100; val += 20) {
+        const y = scoreToY(val);
+        gridLayer.appendChild(createSvgEl("line", {
+          x1: svgConfig.left, y1: y, x2: svgConfig.right, y2: y, class: "grid-line"
+        }));
+        const label = createSvgEl("text", {
+          x: svgConfig.left - 12, y: y + 4, "text-anchor": "end", class: "axis-label"
+        });
+        label.textContent = val;
+        axesLayer.appendChild(label);
+      }
+
+      axesLayer.appendChild(createSvgEl("line", {
+        x1: svgConfig.left, y1: svgConfig.top, x2: svgConfig.left, y2: svgConfig.bottom, class: "axis-line"
+      }));
+      axesLayer.appendChild(createSvgEl("line", {
+        x1: svgConfig.left, y1: svgConfig.bottom, x2: svgConfig.right, y2: svgConfig.bottom, class: "axis-line"
+      }));
+    }
+
+    function tampilkanHasilDanGrafik() {
+      renderGridAndAxes();
+      linesLayer.innerHTML = "";
+      pointsLayer.innerHTML = "";
+
+      const rekap = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      const aktifKey = rekap.pesertaAktif;
+      const peserta = aktifKey ? rekap[aktifKey] : null;
+
+      if (!peserta) {
+        emptyState.style.display = "flex";
+        return;
+      }
+
+      const ganjilObj = peserta.ganjil || {};
+      const genapObj = peserta.genap || {};
+      const semuaMapel = Array.from(new Set([...Object.keys(ganjilObj), ...Object.keys(genapObj)]));
+
+      if (semuaMapel.length === 0) {
+        emptyState.style.display = "flex";
+        return;
+      }
+
+      emptyState.style.display = "none";
+      const semesterTerakhir = rekap.semesterTerakhir === "ganjil" ? "Semester Ganjil" : "Semester Genap";
+      const ringkasanAktif = rekap.semesterTerakhir === "ganjil" ? peserta.ringkasanGanjil : peserta.ringkasanGenap;
+
+      document.getElementById("judulHasil").textContent = `Hasil Ujian — ${peserta.nama}`;
+      document.getElementById("subjudulHasil").textContent = `Baru saja menyelesaikan ${semesterTerakhir}`;
+
+      const ringkasanEl = document.getElementById("ringkasanNilai");
+      if (ringkasanAktif) {
+        ringkasanEl.style.display = "block";
+        ringkasanEl.textContent =
+          `Nilai ${semesterTerakhir}: ${ringkasanAktif.nilaiAkhir} / 100 (Benar ${ringkasanAktif.totalBenar} dari ${ringkasanAktif.totalSoal} soal)`;
+      }
+
+      document.getElementById("detailMapel").innerHTML = semuaMapel.map((mapel) => {
+        const gVal = ganjilObj[mapel] !== undefined ? ganjilObj[mapel] : "-";
+        const eVal = genapObj[mapel] !== undefined ? genapObj[mapel] : "-";
+        return `
+          <div class="detail-item">
+            <div class="detail-mapel">${mapel}</div>
+            <div class="detail-scores">
+              <div class="skor-g">Ganjil: ${gVal}</div>
+              <div class="skor-e">Genap: ${eVal}</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const list = semuaMapel.map((mapel) => ({
+        mapel,
+        ganjil: ganjilObj[mapel] ?? null,
+        genap: genapObj[mapel] ?? null
+      }));
+
+      const total = list.length;
+      const ganjilPoints = [];
+      const genapPoints = [];
+
+      list.forEach((item, idx) => {
+        const x = indexToX(idx, total);
+        const g = clampScore(item.ganjil);
+        const e = clampScore(item.genap);
+
+        if (g !== null) ganjilPoints.push(`${x},${scoreToY(g)}`);
+        if (e !== null) genapPoints.push(`${x},${scoreToY(e)}`);
+
+        const xLabel = createSvgEl("text", { x, y: svgConfig.bottom + 24, class: "x-label" });
+        xLabel.textContent = item.mapel;
+        axesLayer.appendChild(xLabel);
+      });
+
+      if (ganjilPoints.length > 0) {
+        linesLayer.appendChild(createSvgEl("polyline", {
+          fill: "none", stroke: "#2563eb", "stroke-width": "3",
+          "stroke-linejoin": "round", "stroke-linecap": "round", points: ganjilPoints.join(" ")
+        }));
+      }
+
+      if (genapPoints.length > 0) {
+        linesLayer.appendChild(createSvgEl("polyline", {
+          fill: "none", stroke: "#0d9488", "stroke-width": "3",
+          "stroke-linejoin": "round", "stroke-linecap": "round", points: genapPoints.join(" ")
+        }));
+      }
+
+      list.forEach((item, idx) => {
+        const x = indexToX(idx, total);
+        const g = clampScore(item.ganjil);
+        const e = clampScore(item.genap);
+        const yG = g !== null ? scoreToY(g) : null;
+        const yE = e !== null ? scoreToY(e) : null;
+
+        if (g !== null) {
+          pointsLayer.appendChild(createSvgEl("circle", {
+            cx: x, cy: yG, r: 5, fill: "#ffffff", stroke: "#2563eb", "stroke-width": "2.5"
+          }));
+          const txtG = createSvgEl("text", {
+            x, y: yG + (yE !== null && yG > yE ? 16 : -10), class: "val-ganjil"
+          });
+          txtG.textContent = g;
+          pointsLayer.appendChild(txtG);
+        }
+
+        if (e !== null) {
+          pointsLayer.appendChild(createSvgEl("circle", {
+            cx: x, cy: yE, r: 5, fill: "#ffffff", stroke: "#0d9488", "stroke-width": "2.5"
+          }));
+          const txtE = createSvgEl("text", {
+            x, y: yE + (yG !== null && yE >= yG ? 16 : -10), class: "val-genap"
+          });
+          txtE.textContent = e;
+          pointsLayer.appendChild(txtE);
+        }
+      });
+
+      const gVals = list.map((d) => clampScore(d.ganjil)).filter((v) => v !== null);
+      const eVals = list.map((d) => clampScore(d.genap)).filter((v) => v !== null);
+      const avgG = gVals.length ? (gVals.reduce((a, b) => a + b, 0) / gVals.length).toFixed(1) : "-";
+      const avgE = eVals.length ? (eVals.reduce((a, b) => a + b, 0) / eVals.length).toFixed(1) : "-";
+
+      document.getElementById("avgGanjil").textContent = avgG;
+      document.getElementById("avgGenap").textContent = avgE;
+
+      const diffEl = document.getElementById("diffAvg");
+      if (avgG !== "-" && avgE !== "-") {
+        const diff = Number(avgE) - Number(avgG);
+        diffEl.textContent = diff > 0 ? `+${diff.toFixed(1)} ▲` : diff < 0 ? `${diff.toFixed(1)} ▼` : "0.0";
+        diffEl.style.color = diff > 0 ? "#0d9488" : diff < 0 ? "#ef4444" : "#0f172a";
+      } else {
+        diffEl.textContent = "-";
+        diffEl.style.color = "#0f172a";
+      }
+    }
+
+    tampilkanHasilDanGrafik();
+  </script>
+</body>
+</html>
